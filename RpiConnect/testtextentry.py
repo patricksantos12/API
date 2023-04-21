@@ -1,21 +1,27 @@
 import mysql.connector
 import sys
+import json
 
 db = mysql.connector.connect(host = "localhost", user = "admin", password = "password", database = "RegistrationDatabase")
 
 cursor = db.cursor(buffered=True)
 
-res = input("Enter the Plate Number: ")
+try:
+    res = json.load(sys.argv[0])
+    print(str(res))
+except:
+    print("ERROR")
+    sys.exit(1)
+    
+result = {'status': 'Yes!'}
 
-sys.argv[0] = res
-
-res1 = sys.argv[0]
+print(json.dump(result))
 
 if str(res) == "":
     print("No plate number was entered.")
     exit()
 
-query = "SELECT PlateN FROM `Dummy Database` WHERE `PlateN` LIKE '"+ res +"'"
+query = "SELECT PlateN FROM `Dummy Database` WHERE `PlateN` LIKE '"+ str(res) +"'"
 
 cursor.execute(query)
         
