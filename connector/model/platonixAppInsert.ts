@@ -8,7 +8,7 @@ export const create = (car: Platonix, callback: Function) => {
 
         db.query(
             queryString,
-            [car.platonixID, car.plateNumber, car.carRegistrationStatus, car.carColor, car.carMarker, car.carModel, car.carCityLocation],
+            [car.plateNumber, car.carRegistrationStatus, car.carColor, car.carMarker, car.carModel, car.carCityLocation],
 
             (err, result) => {
                 if (err) {callback(err)};
@@ -17,4 +17,5 @@ export const create = (car: Platonix, callback: Function) => {
                 callback(null, insertId);
             }
         );
-}
+};
+ 
