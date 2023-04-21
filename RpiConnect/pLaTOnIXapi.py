@@ -119,16 +119,18 @@ db = mysql.connector.connect(host = "localhost", user = "admin", password = "pas
 cursor = db.cursor()
 
 
-query2 = "SELECT * FROM `Dummy Database` WHERE `PlateN` = '"+ str(res) +"';"
+query2 = "SELECT * FROM `Dummy Database` WHERE `PlateN` = '"+ str(res) +"'"
  
 cursor.execute(query2)
 
-rows = cursor.fetchall()
+rows = cursor.fetchone()
+
+print("Plate Number: ",str(res))
 
 try:
     str(res)
     
-except str(res) == "":
+except res == "":
     
     while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
         c += 1
@@ -137,9 +139,7 @@ except str(res) == "":
         cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', new_img)
         print("Plate is Unrecognized!")
 else:
-    try:
-        rows = cursor.fetchall()
-    except str(rows) == "(0,)":
+    if rows == None:
         while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
             b += 1
         else:
@@ -156,22 +156,17 @@ else:
     
             print("Plate saved in the Unregistered Database")
             print(result2)
-                    
             
     else:
-        print("Plate Number: ",res)
         print("Registered!")
-        
 
-        for row in rows:
-            print(row)
+        print(rows)
     
         while os.path.exists("plates/processed/Registered/" + plateFilename + str(a) + ".jpg"):
             a += 1
         
         else:
             cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', new_img)
-            
     
             print("Plate saved in the Registered Database.")
 
