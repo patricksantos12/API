@@ -29,7 +29,10 @@ import {
     ExtraText,
     TextLink,
     TextLinkContent,
-    PageTitle3
+    HelpLogo,
+    PageTitle1,
+    PageTitle2,
+    PageTitle3,
 
 } from './../components/styles';
 
@@ -41,7 +44,7 @@ const {brand, darkLight, primary} = Colors;
 // keyboard avoiding view
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
-const Menu = ({navigation}) => {
+const TextEntry = () => {
 
     const [hidePassword, setHidePassword] = useState(true);
 
@@ -49,12 +52,11 @@ const Menu = ({navigation}) => {
         <KeyboardAvoidingWrapper><StyledContainer>
             <StatusBar style="dark" />
             <InnerContainer>
-                <PageLogo resizeMode="cover" source={require('./../assets/img/platonix.png')}/>
+           
+                <PageTitle3>Text-Entry Processing</PageTitle3>
                 <Line />
-                <PageTitle3>Menu Page</PageTitle3>
+                <SubTitle>Here</SubTitle>
                 <Line />
-                
-                
 
                 <Formik
                     initialValues={{serialnumber: '', password: '', enterName: ''}}
@@ -63,26 +65,13 @@ const Menu = ({navigation}) => {
                     }}
                 >{({handleChange, handleBlur, handleSubmit, values}) => (<StyledFormArea>
                     
-                    <PicturesLogo resizeMode="contain" source={require('./../assets/img/ImageProcessing.png')}/>
-                    <StyledButton onPress={() => {navigation.navigate('ImageProcessing')}}>
-                        <ButtonText>Image Processing</ButtonText>
-                    </StyledButton>
-
-                    <PicturesLogo resizeMode="contain" source={require('./../assets/img/DataAnalytics.png')}/>
-                    <StyledButton onPress={() => {navigation.navigate('DataAnalytics')}}>
-                        <ButtonText>Data Analytics</ButtonText>
-                    </StyledButton>
-
-                    <PicturesLogo resizeMode="contain" source={require('./../assets/img/TextEntry.png')}/>
-                    <StyledButton onPress={() => {navigation.navigate('TextEntry')}}>
-                        <ButtonText>Text-Entry Processing</ButtonText>
-                    </StyledButton>
-                    <Line />
-                    <StyledButton onPress={() => {navigation.navigate('Login')}}>
-                        <ButtonText>Logout</ButtonText>
-                    </StyledButton>
-                   
                     
+                    
+                   
+                    <StyledButton onPress={handleSubmit}>
+                        <ButtonText>Enter</ButtonText>
+                    </StyledButton>
+
                 </StyledFormArea>
                 )}
                 </Formik>
@@ -93,5 +82,4 @@ const Menu = ({navigation}) => {
     );
 };
 
-
-export default Menu;
+export default TextEntry;

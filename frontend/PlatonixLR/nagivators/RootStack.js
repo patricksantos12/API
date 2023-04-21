@@ -9,6 +9,9 @@ import Login from './../screens/Login';
 import Register from './../screens/Register';
 import Welcome from './../screens/Welcome';
 import Help from './../screens/Help';
+import ImageProcessing from '../screens/ImageProcessing';
+import DataAnalytics from '../screens/DataAnalytics';
+import TextEntry from '../screens/TextEntry';
 
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +38,10 @@ const RootStack = () => {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen options={{headerTintColor: brand}} name="Welcome" component={Welcome} />
                 <Stack.Screen name="Help" component={Help} />
+                <Stack.Screen name="ImageProcessing" component={ImageProcessing} />
+                <Stack.Screen name="DataAnalytics" component={DataAnalytics} />
+                <Stack.Screen name="TextEntry" component={TextEntry} />
+                
 
             </Stack.Navigator>
         </NavigationContainer>

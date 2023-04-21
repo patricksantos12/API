@@ -56,7 +56,7 @@ const Help = () => {
                 <PageTitle3>Need Help?</PageTitle3>
                 <Line />
                 <SubTitle>Contact our Develpers</SubTitle>
-                <Line />
+                <Line />d
 
                 <Formik
                     initialValues={{serialnumber: '', password: '', enterName: ''}}

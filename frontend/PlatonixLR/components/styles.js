@@ -8,12 +8,13 @@ const StatusBarHeight = Constants.statusBarHeight;
 export const Colors ={
     primary: "#ffffff",
     secondary: "#E5E7EB",
-    tertiary: "1F2937",
+    tertiary: "#1F2937", // corrected here
     darkLight: "#9CA3AF",
     brand: "#6d28d9",
     green: "#10b981",
     red: "#EF4444",
 };
+
 const {primary, secondary, tertiary, darkLight, brand, green, red} = Colors;
 
 export const StyledContainer = styled.View`
@@ -164,7 +165,7 @@ export const StyledTextInput = styled.TextInput`
 
 export const StyledInputLabel = styled.Text`
     color: ${tertiary};
-    fonzt-size: 13px;
+    font-size: 13px;
     text-align: left;
 `;
 
