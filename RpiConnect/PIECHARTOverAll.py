@@ -13,7 +13,7 @@ from numpy import array
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+#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
 def pieChart():
 	data1 = OrderedDict()
 	
@@ -30,11 +30,11 @@ def pieChart():
 	
 	colors = ("green","red","yellow")
 	
-	wp = { 'linewidth' : 1, 'edgecolor' : "green" }
+	wp = { 'linewidth' : 1, 'edgecolor' : "black" }
 		
 	def func(pct,allvalues):
 		absolute = int(pct / 100.*np.sum(allvalues))
-		return "{:.1f}%\n({:d} g)".format(pct,absolute)
+		return "{:.1f}%\n({:d})".format(pct,absolute)
 	
 	fig,ax = plt.subplots(figsize =(10,7))
 	wedges, texts, autotexts = ax.pie(data,autopct = lambda pct: func(pct, data), explode = explode, labels = titles, shadow = True, colors = colors, startangle = 90, wedgeprops = wp, textprops = dict(color = "black"))

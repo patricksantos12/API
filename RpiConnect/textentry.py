@@ -7,7 +7,7 @@ import mysql.connector
 
 db = mysql.connector.connect(host = "localhost", user = "admin", password = "password", database = "RegistrationDatabase")
 
-cursor = db.cursor()
+cursor = db.cursor(buffered=True)
 
 res = str(input("Enter the Plate Number: "))
 
