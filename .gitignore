@@ -1,0 +1,9 @@
+#node_modules
+./node_modules
+./connector/node_modules
+node_modules
+node_modules/*
+
+#env
+./connector/.env
+.env
