@@ -1,7 +1,11 @@
 import mysql.connector
 
-res = input("Enter the Plate Number: ")
-
+try:
+    res = input("Enter the Plate Number: ")
+except EOFError:
+    print("No recieved")
+    sys.exit()
+    
 db = mysql.connector.connect(host = "localhost", user = "admin", password = "password", database = "RegistrationDatabase")
 
 
