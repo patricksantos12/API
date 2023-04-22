@@ -73,6 +73,17 @@ exports.findAllRegistered = (req, res) => {
   });
 };
 
+exports.findSpecificCar = (req, res) => {
+  Platonix.findSpecific((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Could not find."
+      });
+      else res.send(data);
+  })
+}
+
 // // Update a Tutorial identified by the id in the request
 // exports.update = (req, res) => {
 //   // Validate Request

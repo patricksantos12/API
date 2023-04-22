@@ -4,16 +4,18 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Create a new Tutorial
-    router.post("/", platonix.create);
+    router.post("/addVehicle/", platonix.create);
   
     // Retrieve all platonix
-    router.get("/", platonix.findAll);
+    router.get("/search", platonix.findAll);
   
     // Retrieve all published platonix
-    router.get("/registered", platonix.findAllRegistered);
+    router.get("/search/registered", platonix.findAllRegistered);
   
     // Retrieve a single Tutorial with id
-    router.get("/:id", platonix.findOne);
+    router.get("/search/:id", platonix.findOne);
+
+    // router.get("/search/:carMaker", platonix.findSpecific);
   
     // // Update a Tutorial with id
     // router.put("/:id", platonix.update);

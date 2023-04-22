@@ -42,24 +42,39 @@ Platonix.findById = (id, result) => {
   });
 };
 
-// car maker
-Platonix.getAll = (carMaker, result) => {
+// Search
+Platonix.findSpecific = (carMaker, carRegistrationStatus, result) => {
   let query = "SELECT * FROM platonixApp";
 
   if (carMaker) {
     query += ` WHERE carMaker LIKE '%${carMaker}%'`;
+
+    sql.query(query, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      console.log("car maker: ", res);
+      result(null, res);
+    });
   }
 
-  sql.query(query, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+  if (carRegistrationStatus) {
+    query += ` WHERE carRegistrationStatus LIKE '%${carRegistrationStatus}%'`;
 
-    console.log("car maker: ", res);
-    result(null, res);
-  });
+    sql.query(query, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+  
+      console.log("car maker: ", res);
+      result(null, res);
+    });
+  }
 };
 
 Platonix.getAllRegistered = result => {
