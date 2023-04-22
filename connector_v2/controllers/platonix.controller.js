@@ -43,7 +43,6 @@ exports.findAll = (req, res) => {
     else res.send(data);
   });
 };
-
 // Find a single Car by Id
 exports.findOne = (req, res) => {
     Platonix.findById(req.params.id, (err, data) => {
@@ -75,7 +74,7 @@ exports.findAllRegistered = (req, res) => {
 
 // find all published Tutorials
 exports.findAllUnRegistered = (req, res) => {
-  Platonix.getAllUnRegistered((err, data) => {
+  Platonix.getAllRegistered((err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -85,15 +84,20 @@ exports.findAllUnRegistered = (req, res) => {
   });
 };
 
-exports.findSpecificCar = (req, res) => {
-  Platonix.findSpecific((err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Could not find."
-      });
-      else res.send(data);
-  })
+exports.findPlateNo = (req, res) => {
+  Platonix.getByPlateNo(req.params.plateNumber, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found car with plate no ${req.params.plateNumber}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving car with plate no " + req.params.plateNumber
+        });
+      }
+    } else res.send(data);
+  });
 }
 
 // // Update a Tutorial identified by the id in the request

@@ -7,18 +7,19 @@ module.exports = app => {
     router.post("/addVehicle/", platonix.create);
   
     // Retrieve all platonix
-    router.get("/search/", platonix.findAll);
+    router.get("/search/all/", platonix.findAll);
   
     // Retrieve all published platonix
-    router.get("/search/registered", platonix.findAllRegistered);
+    router.get("/search/status/registered", platonix.findAllRegistered);
   
     // Retrieve all published platonix
-    router.get("/search/unregistered", platonix.findAllUnRegistered);
+    router.get("/search/status/unregistered", platonix.findAllUnRegistered);
 
     // Retrieve a single Tutorial with id
-    router.get("/search/:id", platonix.findOne);
+    router.get("/search/id/:id", platonix.findOne);
 
-    // router.get("/search/:carMaker", platonix.findSpecific);
+    // Retrieve a single Tutorial with id
+    router.get("/search/plateno/:plateNumber", platonix.findPlateNo);
   
     // // Update a Tutorial with id
     // router.put("/:id", platonix.update);
