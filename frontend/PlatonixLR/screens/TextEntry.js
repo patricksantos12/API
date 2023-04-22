@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
+import axios from 'axios';
 
 // formik
 import {Formik} from 'formik';
@@ -46,6 +47,12 @@ const TextEntry = ({navigation}) => {
 
     const [hidePassword, setHidePassword] = useState(true);
 
+
+
+
+
+    
+
     return (
         <KeyboardAvoidingWrapper>
         <StyledContainer>
@@ -57,20 +64,39 @@ const TextEntry = ({navigation}) => {
                 <SubTitle1>Enter Text here</SubTitle1>
 
                 <Formik
-                    initialValues={{platenumber: '', registrationstatus: '', carcolor: '', carmaker: '', carmodel: '', carlocation: '' }}
-                    onSubmit={(values) => {
-                        console.log(values);
-                        navigation.navigate('Welcome')
-                    }}
-                >{({handleChange, handleBlur, handleSubmit, values}) => (<StyledFormArea>
+  initialValues={{plateNumber: '', carRegistrationStatus: '', carColor: '', carMaker: '', carModel: '', carCityLocation: '' }}
+  onSubmit={(values, { setSubmitting, resetForm }) => {
+    axios.post('http://192.168.100.212:3000/api/v1/platonix/addVehicle', {
+      plateNumber: values.plateNumber,
+      carRegistrationStatus: values.carRegistrationStatus,
+      carColor: values.carColor,
+      carMaker: values.carMaker,
+      carModel: values.carModel,
+      carCityLocation: values.carCityLocation
+    })
+      .then(response => {
+        console.log(response.data);
+        // handle success, e.g. show success message to the user
+        resetForm();
+      })
+      .catch(error => {
+        console.error(error);
+        // handle error, e.g. show error message to the user
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+  }}
+>
+                {({handleChange, handleBlur, handleSubmit, values}) => (<StyledFormArea>
                     <MyTextInput 
                         label="Plate Number"
                         icon="number"
                         placeholder="Enter Plate Number"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('platenumber')}
-                        onBlur={handleBlur('platenumber')}
-                        value={values.platenumber}
+                        onChangeText={handleChange('plateNumber')}
+                        onBlur={handleBlur('plateNumber')}
+                        value={values.plateNumber}
                     />
 
                         <MyTextInput 
@@ -78,50 +104,51 @@ const TextEntry = ({navigation}) => {
                         icon="verified"
                         placeholder="Enter Status"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('registrationstatus')}
-                        onBlur={handleBlur('registrationstatus')}
-                        value={values.ownername}
+                        onChangeText={handleChange('carRegistrationStatus')}
+                        onBlur={handleBlur('carRegistrationStatus')}
+                        value={values.carRegistrationStatus}
                     />
                     <MyTextInput 
                         label="Car Color"
                         icon="sun"
                         placeholder="Enter Color"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('carcolor')}
-                        onBlur={handleBlur('carcolor')}
-                        value={values.carcolor}
+                        onChangeText={handleChange('carColor')}
+                        onBlur={handleBlur('carColor')}
+                        value={values.carColor}
                     />
                     <MyTextInput 
                         label="Car Maker"
                         icon="cross-reference"
                         placeholder="Enter Maker"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('carmaker')}
-                        onBlur={handleBlur(' carmaker')}
-                        value={values.carmaker}
+                        onChangeText={handleChange('carMaker')}
+                        onBlur={handleBlur('carMaker')}
+                        value={values.carMaker}
                     />
                     <MyTextInput 
                         label="Car Model"
                         icon="apps"
                         placeholder="Enter Model"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('carmodel')}
-                        onBlur={handleBlur('carmodel')}
-                        value={values.carmodel}
+                        onChangeText={handleChange('carModel')}
+                        onBlur={handleBlur('carModel')}
+                        value={values.carModel}
                     />
                     <MyTextInput 
                         label="Car City Location"
                         icon="location"
                         placeholder="Enter Location"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('carlocation')}
-                        onBlur={handleBlur('carlocation')}
-                        value={values.carlocation}
+                        onChangeText={handleChange('carCityLocation')}
+                        onBlur={handleBlur('carCityLocation')}
+                        value={values.carCityLocation}
                     />
 
                         
                     <MsgBox>...</MsgBox>
-                    <StyledButton onPress={() => {navigation.navigate('Register')}}>
+                    <StyledButton onPress={handleSubmit}>
+
                         <ButtonText>Enter</ButtonText>
                     </StyledButton>
                     <Line />
