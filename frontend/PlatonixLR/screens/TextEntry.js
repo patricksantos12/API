@@ -57,7 +57,7 @@ const TextEntry = ({navigation}) => {
                 <SubTitle1>Enter Text here</SubTitle1>
 
                 <Formik
-                    initialValues={{ownername: '', serialnumber: '', password: '', confirmPassword: '' }}
+                    initialValues={{platenumber: '', registrationstatus: '', carcolor: '', carmaker: '', carmodel: '', carlocation: '' }}
                     onSubmit={(values) => {
                         console.log(values);
                         navigation.navigate('Welcome')
@@ -68,9 +68,9 @@ const TextEntry = ({navigation}) => {
                         icon="number"
                         placeholder="Enter Plate Number"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('serialnumber')}
-                        onBlur={handleBlur('serialnumber')}
-                        value={values.serialnumber}
+                        onChangeText={handleChange('platenumber')}
+                        onBlur={handleBlur('platenumber')}
+                        value={values.platenumber}
                     />
 
                         <MyTextInput 
@@ -78,8 +78,8 @@ const TextEntry = ({navigation}) => {
                         icon="verified"
                         placeholder="Enter Status"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('ownername')}
-                        onBlur={handleBlur('ownername')}
+                        onChangeText={handleChange('registrationstatus')}
+                        onBlur={handleBlur('registrationstatus')}
                         value={values.ownername}
                     />
                     <MyTextInput 
@@ -87,41 +87,41 @@ const TextEntry = ({navigation}) => {
                         icon="sun"
                         placeholder="Enter Color"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('ownername')}
-                        onBlur={handleBlur('ownername')}
-                        value={values.ownername}
+                        onChangeText={handleChange('carcolor')}
+                        onBlur={handleBlur('carcolor')}
+                        value={values.carcolor}
                     />
                     <MyTextInput 
                         label="Car Maker"
                         icon="cross-reference"
                         placeholder="Enter Maker"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('ownername')}
-                        onBlur={handleBlur('ownername')}
-                        value={values.ownername}
+                        onChangeText={handleChange('carmaker')}
+                        onBlur={handleBlur(' carmaker')}
+                        value={values.carmaker}
                     />
                     <MyTextInput 
                         label="Car Model"
                         icon="apps"
                         placeholder="Enter Model"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('ownername')}
-                        onBlur={handleBlur('ownername')}
-                        value={values.ownername}
+                        onChangeText={handleChange('carmodel')}
+                        onBlur={handleBlur('carmodel')}
+                        value={values.carmodel}
                     />
                     <MyTextInput 
                         label="Car City Location"
                         icon="location"
                         placeholder="Enter Location"
                         placeholderTextColor={darkLight}
-                        onChangeText={handleChange('ownername')}
-                        onBlur={handleBlur('ownername')}
-                        value={values.ownername}
+                        onChangeText={handleChange('carlocation')}
+                        onBlur={handleBlur('carlocation')}
+                        value={values.carlocation}
                     />
 
                         
                     <MsgBox>...</MsgBox>
-                    <StyledButton onPress={handleSubmit}>
+                    <StyledButton onPress={() => {navigation.navigate('Register')}}>
                         <ButtonText>Enter</ButtonText>
                     </StyledButton>
                     <Line />
