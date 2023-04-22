@@ -44,7 +44,7 @@ Platonix.findById = (id, result) => {
 
 // platenumber
 Platonix.getByPlateNo = (plateNumber, result) => {
-  sql.query(`SELECT * FROM platonixApp WHERE plateNumber = ${plateNumber}`, (err, res) => {
+  sql.query(`SELECT * FROM platonixApp WHERE plateNumber = "${plateNumber}"`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

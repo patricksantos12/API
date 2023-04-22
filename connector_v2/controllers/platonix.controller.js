@@ -74,7 +74,7 @@ exports.findAllRegistered = (req, res) => {
 
 // find all published Tutorials
 exports.findAllUnRegistered = (req, res) => {
-  Platonix.getAllRegistered((err, data) => {
+  Platonix.getAllUnRegistered((err, data) => {
     if (err)
       res.status(500).send({
         message:
