@@ -42,43 +42,61 @@ Platonix.findById = (id, result) => {
   });
 };
 
+// platenumber
+Platonix.findByPlateNo = (plateNumber, result) => {
+  sql.query(`SELECT * FROM platonixApp WHERE plateNumber = ${plateNumber}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("car found : ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found car with the plateNumber
+    result({ kind: "not_found" }, null);
+  });
+};
+
 // Search
-Platonix.findSpecific = (carMaker, carRegistrationStatus, result) => {
+Platonix.getAll = (carMaker, result) => {
   let query = "SELECT * FROM platonixApp";
 
-  if (carMaker) {
-    query += ` WHERE carMaker LIKE '%${carMaker}%'`;
+  // if (carMaker) {
+  //   query += ` WHERE carMaker LIKE '%${carMaker}%'`;
+  // }
 
-    sql.query(query, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-  
-      console.log("car maker: ", res);
-      result(null, res);
-    });
-  }
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
 
-  if (carRegistrationStatus) {
-    query += ` WHERE carRegistrationStatus LIKE '%${carRegistrationStatus}%'`;
-
-    sql.query(query, (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
-  
-      console.log("car maker: ", res);
-      result(null, res);
-    });
-  }
+    console.log("err: ", res);
+    result(null, res);
+  });
 };
 
 Platonix.getAllRegistered = result => {
   sql.query("SELECT * from platonixApp where `carRegistrationStatus` like 'REGISTERED'", (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    console.log("car registered: ", res);
+    result(null, res);
+  });
+};
+
+Platonix.getAllUnRegistered = result => {
+  sql.query("SELECT * from platonixApp where `carRegistrationStatus` like 'UNREGISTERED'", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

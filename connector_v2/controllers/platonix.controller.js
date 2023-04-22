@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database (with condition).
 exports.findAll = (req, res) => {
-  const plateNumber = req.query.title;
+  const plateNumber = req.query.plateNumber;
 
   Platonix.getAll(plateNumber, (err, data) => {
     if (err)
@@ -64,6 +64,18 @@ exports.findOne = (req, res) => {
 // find all published Tutorials
 exports.findAllRegistered = (req, res) => {
   Platonix.getAllRegistered((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving registered."
+      });
+    else res.send(data);
+  });
+};
+
+// find all published Tutorials
+exports.findAllUnRegistered = (req, res) => {
+  Platonix.getAllUnRegistered((err, data) => {
     if (err)
       res.status(500).send({
         message:
