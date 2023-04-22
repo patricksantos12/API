@@ -20,7 +20,7 @@ Platonix.create = (newCar, result) => {
 
     console.log("car created: ", { id: res.insertId, ...newCar });
     result(null, { id: res.insertId, ...newCar });
-  });
+  });git 
 };
 
 Platonix.findById = (id, result) => {
@@ -63,7 +63,7 @@ Platonix.getAll = (carMaker, result) => {
 };
 
 Platonix.getAllRegistered = result => {
-  sql.query("SELECT * FROM platonixApp WHERE carRegistrationStatus=REGISTERED", (err, res) => {
+  sql.query("SELECT * FROM `platonixApp` WHERE `carRegistrationStatus` = 'REGISTERED'", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
