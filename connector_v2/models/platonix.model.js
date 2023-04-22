@@ -24,7 +24,7 @@ Platonix.create = (newCar, result) => {
 };
 
 Platonix.findById = (id, result) => {
-  sql.query(`SELECT * FROM platonixApp WHERE id = ${id}`, (err, res) => {
+  sql.query(`SELECT * FROM platonixApp WHERE platonixID = ${id}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -63,7 +63,7 @@ Platonix.getAll = (carMaker, result) => {
 };
 
 Platonix.getAllRegistered = result => {
-  sql.query("SELECT * FROM platonixApp WHERE carRegistrationStatus=REGISTERED", (err, res) => {
+  sql.query("SELECT * from platonixApp where `carRegistrationStatus` like 'REGISTERED'", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
