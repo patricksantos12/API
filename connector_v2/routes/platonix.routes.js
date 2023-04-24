@@ -3,7 +3,7 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    // Create a new platonix
     router.post("/addVehicle/", platonix.create);
   
     // Retrieve all platonix
@@ -15,17 +15,17 @@ module.exports = app => {
     // Retrieve all published platonix
     router.get("/search/status/unregistered", platonix.findAllUnRegistered);
 
-    // Retrieve a single Tutorial with id
+    // Retrieve a single platonix with id
     router.get("/search/id/:id", platonix.findOne);
 
-    // Retrieve a single Tutorial with id
+    // Retrieve a single platonix with id
     router.get("/search/plateno/:plateNumber", platonix.findPlateNo);
   
-    // // Update a Tutorial with id
-    // router.put("/:id", platonix.update);
+    // // Update a platonix with id
+    router.put("/update/:id", platonix.update);
   
-    // // Delete a Tutorial with id
-    // router.delete("/:id", platonix.delete);
+    // Delete a platonix with id
+    router.delete("/remove/:id", platonix.delete);
   
     // // Delete all platonix
     // router.delete("/", platonix.deleteAll);

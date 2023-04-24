@@ -108,47 +108,47 @@ Platonix.getAllUnRegistered = result => {
   });
 };
 
-// Platonix.updateById = (id, tutorial, result) => {
-//   sql.query(
-//     "UPDATE tutorials SET title = ?, description = ?, published = ? WHERE id = ?",
-//     [tutorial.title, tutorial.description, tutorial.published, id],
-//     (err, res) => {
-//       if (err) {
-//         console.log("error: ", err);
-//         result(null, err);
-//         return;
-//       }
+Platonix.updateById = (platonixID, platonix, result) => {
+  sql.query(
+    "UPDATE platonixApp SET plateNumber = ?, carRegistrationStatus = ?, carColor = ?, carMaker = ?, carModel = ?, carCityLocation = ? WHERE platonixID = ?",
+    [platonix.plateNumber, platonix.carRegistrationStatus, platonix.carColor, platonix.carMaker, platonix.carModel, platonix.carCityLocation, platonixID],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-//       if (res.affectedRows == 0) {
-//         // not found Tutorial with the id
-//         result({ kind: "not_found" }, null);
-//         return;
-//       }
+      if (res.affectedRows == 0) {
+        // not found cars with the platonixID
+        result({ kind: "not_found" }, null);
+        return;
+      }
 
-//       console.log("updated tutorial: ", { id: id, ...tutorial });
-//       result(null, { id: id, ...tutorial });
-//     }
-//   );
-// };
+      console.log("updated car: ", { id: platonixID, ...platonix });
+      result(null, { id: platonixID, ...platonix });
+    }
+  );
+};
 
-// Tutorial.remove = (id, result) => {
-//   sql.query("DELETE FROM tutorials WHERE id = ?", id, (err, res) => {
-//     if (err) {
-//       console.log("error: ", err);
-//       result(null, err);
-//       return;
-//     }
+Platonix.remove = (platonixID, result) => {
+  sql.query("DELETE FROM platonixApp WHERE id = ?", platonixID, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
 
-//     if (res.affectedRows == 0) {
-//       // not found Tutorial with the id
-//       result({ kind: "not_found" }, null);
-//       return;
-//     }
+    if (res.affectedRows == 0) {
+      // not found Tutorial with the id
+      result({ kind: "not_found" }, null);
+      return;
+    }
 
-//     console.log("deleted tutorial with id: ", id);
-//     result(null, res);
-//   });
-// };
+    console.log("deleted cars with id: ", platonixID);
+    result(null, res);
+  });
+};
 
 // Tutorial.removeAll = result => {
 //   sql.query("DELETE FROM tutorials", (err, res) => {
