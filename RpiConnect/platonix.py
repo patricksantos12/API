@@ -177,7 +177,5 @@ elif res != "":
     
             name = name.replace("'","")
         
-db.commit()
-db.close()
 cap.release()
 cv2.destroyAllWindows()
