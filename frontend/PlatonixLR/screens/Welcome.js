@@ -74,7 +74,7 @@ const Menu = ({navigation}) => {
                     </StyledButton>
 
                     <PicturesLogo resizeMode="contain" source={require('./../assets/img/TextEntry.png')}/>
-                    <StyledButton onPress={() => {navigation.navigate('TextEntry')}}>
+                    <StyledButton onPress={() => {navigation.navigate('TEMenu')}}>
                         <ButtonText>Text-Entry Processing</ButtonText>
                     </StyledButton>
                     <Line />

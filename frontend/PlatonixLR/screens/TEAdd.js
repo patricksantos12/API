@@ -32,7 +32,7 @@ import {
     PageTitle1,
     SubTitle1
 
-} from './../components/styles';
+} from '../components/styles';
 
 import {View} from 'react-native';
 
@@ -43,7 +43,7 @@ const {brand, darkLight, primary} = Colors;
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
 
-const TextEntry = ({navigation}) => {
+const TEAdd = ({navigation}) => {
 
     const [hidePassword, setHidePassword] = useState(true);
 
@@ -118,9 +118,9 @@ const TextEntry = ({navigation}) => {
                         value={values.carColor}
                     />
                     <MyTextInput 
-                        label="Car Maker"
+                        label="Car Brand"
                         icon="cross-reference"
-                        placeholder="Enter Maker"
+                        placeholder="Enter brand"
                         placeholderTextColor={darkLight}
                         onChangeText={handleChange('carMaker')}
                         onBlur={handleBlur('carMaker')}
@@ -180,4 +180,4 @@ const MyTextInput = ({label, icon, isPassword, hidePassword, setHidePassword, ..
 
 }
 
-export default TextEntry;
+export default TEAdd;

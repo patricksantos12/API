@@ -11,7 +11,8 @@ import Welcome from './../screens/Welcome';
 import Help from './../screens/Help';
 import ImageProcessing from '../screens/ImageProcessing';
 import DataAnalytics from '../screens/DataAnalytics';
-import TextEntry from '../screens/TextEntry';
+import TEAdd from '../screens/TEAdd';
+import TEMenu from '../screens/TEMenu';
 
 
 const Stack = createNativeStackNavigator();
@@ -40,8 +41,8 @@ const RootStack = () => {
                 <Stack.Screen name="Help" component={Help} />
                 <Stack.Screen name="ImageProcessing" component={ImageProcessing} />
                 <Stack.Screen name="DataAnalytics" component={DataAnalytics} />
-                <Stack.Screen name="TextEntry" component={TextEntry} />
-                
+                <Stack.Screen name="TEAdd" component={TEAdd} />
+                <Stack.Screen name="TEMenu" component={TEMenu} />
 
             </Stack.Navigator>
         </NavigationContainer>
