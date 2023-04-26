@@ -23,6 +23,8 @@ a = 1
 b = 1
 c = 1
 
+#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
+
 while True:
     success, img = cap.read()
 
@@ -48,12 +50,10 @@ while True:
             try:
                 img_roi
             except NameError:
-                
                 while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
                     c += 1
                     
                 else:
-                    print('Plate is Unrecognized!')
                     cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img)
                     cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
                     break
@@ -123,18 +123,23 @@ cv2.imread(Cropped_loc)
 plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
 
 mapping = dict.fromkeys(range(32))
-res = plate.translate(mapping)
+res1 = plate.translate(mapping)
 
 db = mysql.connector.connect(host = "localhost", user = "admin", password = "password", database = "RegistrationDatabase")
 
 cursor = db.cursor()
 
+res = str(res1)
+
+res = res.replace(" ","")
+print(str(res))
 
 query2 = "SELECT * FROM `Dummy Database` WHERE `PlateN` = '"+ str(res) +"' LIMIT 1"
  
 cursor.execute(query2)
 
 rows = cursor.fetchone()
+
     
 if res == "":
     
