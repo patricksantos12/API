@@ -23,7 +23,7 @@ a = 1
 b = 1
 c = 1
 
-#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
+#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
 
 while True:
     success, img = cap.read()
