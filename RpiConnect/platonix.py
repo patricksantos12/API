@@ -5,6 +5,9 @@ import imutils
 import numpy as np
 import pytesseract
 import requests
+import pycurl
+import certifi
+from io import BytesIO
 # import mysql.connector
 
 haarcascade = "model/haarcascade_plate_number.xml"
@@ -124,8 +127,12 @@ cv2.imread(Cropped_loc)
 plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
 
 mapping = dict.fromkeys(range(32))
-res = plate.translate(mapping)
-    
+res1 = plate.translate(mapping)
+
+res = str(res1)
+
+res = res.replace(" ","")   
+ 
 if res == "":
     
     while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
