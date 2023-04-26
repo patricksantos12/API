@@ -125,13 +125,6 @@ plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
 
 mapping = dict.fromkeys(range(32))
 res = plate.translate(mapping)
-
-
-query2 = "SELECT * FROM `Dummy Database` WHERE `PlateN` = '"+ str(res) +"' LIMIT 1"
- 
-cursor.execute(query2)
-
-rows = cursor.fetchone()
     
 if res == "":
     
@@ -171,10 +164,6 @@ elif res != "":
             cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', new_img)
     
             print("Saved to Database: Registered")
-
-            cursor.execute(sql1)
-        
-            result1 = cursor.fetchone()
 
             name = str(result1)
         
