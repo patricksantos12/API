@@ -1,13 +1,4 @@
 import os
-import plotly
-import pandas as pd
-import pyexcel_ods as pe
-import plotly.express as px
-from pyexcel_ods3 import get_data
-from odf.opendocument import load
-from pyexcel_ods3 import save_data
-from collections import OrderedDict
-from pandas_ods_reader import read_ods
 from matplotlib.pyplot import pie, show
 from numpy import array
 import numpy as np
@@ -15,8 +6,6 @@ import matplotlib.pyplot as plt
 
 #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
 def pieChart():
-	data1 = OrderedDict()
-	
 	registered = len(os.listdir(r"../RpiConnect/plates/processed/Registered"))
 	unregistered = len(os.listdir(r"../RpiConnect/plates/processed/Unregistered"))
 	unrecognized = len(os.listdir(r"../RpiConnect/plates/processed/Unrecognized"))

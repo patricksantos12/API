@@ -1,11 +1,12 @@
 import os
 import cv2
+import sys
 import imutils
 import numpy as np
 import pytesseract
 import mysql.connector
 
-harcascade = "model/haarcascade_plate_number.xml"
+haarcascade = "model/haarcascade_plate_number.xml"
 
 cap = cv2.VideoCapture(0)
 
@@ -25,7 +26,7 @@ c = 1
 while True:
     success, img = cap.read()
 
-    plate_cascade = cv2.CascadeClassifier(harcascade)
+    plate_cascade = cv2.CascadeClassifier(haarcascade)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     plates = plate_cascade.detectMultiScale(img_gray, 1.1, 4)
@@ -78,14 +79,22 @@ edged = cv2.Canny(gray_image, 30, 200)
 cnts,new = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
 image1=image.copy()
-cv2.drawContours(image1,cnts,-1,(0,255,0),3)   
 
+try:
+    cv2.drawContours(image1,cnts,-1,(0,255,0),3)   
+except cv2.error as e:
+    pass
+    
 cnts = sorted(cnts, key = cv2.contourArea, reverse = True) [:30]
 screenCnt = 0
 
 image2 = image.copy()
-cv2.drawContours(image2,cnts,-1,(0,255,0),3)
 
+try:
+    cv2.drawContours(image2,cnts,-1,(0,255,0),3)
+except cv2.error as e:
+    pass
+    
 for c in cnts:
     perimeter = cv2.arcLength(c, True)
     approx = cv2.approxPolyDP(c, 0.018 * perimeter, True)
@@ -102,8 +111,10 @@ for c in cnts:
             cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
             break
         break
-
-cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
+try:
+    cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
+except cv2.error as e:
+    pass
     
 Cropped_loc = "plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg"
 
@@ -119,18 +130,13 @@ db = mysql.connector.connect(host = "localhost", user = "admin", password = "pas
 cursor = db.cursor()
 
 
-query2 = "SELECT * FROM `Dummy Database` WHERE `PlateN` = '"+ str(res) +"'"
+query2 = "SELECT * FROM `Dummy Database` WHERE `PlateN` = '"+ str(res) +"' LIMIT 1"
  
 cursor.execute(query2)
 
 rows = cursor.fetchone()
-
-print("Plate Number: ",str(res))
-
-try:
-    str(res)
     
-except res == "":
+if res == "":
     
     while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
         c += 1
@@ -138,7 +144,11 @@ except res == "":
     else:
         cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', new_img)
         print("Plate is Unrecognized!")
-else:
+        print("Saved to folder: Unrecognized") 
+
+elif res != "":
+    print("Plate Number: ",str(res))
+    
     if rows == None:
         while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
             b += 1
@@ -150,12 +160,14 @@ else:
             sql = "INSERT INTO `UNREGISTERED` (PlateN, Date) VALUES ('" + res + "', CURDATE());"
             cursor.execute(sql)
                 
-            sql2 = "SELECT PlateN, Date FROM UNREGISTERED WHERE PlateN = '" + res + "';"
+            sql2 = "SELECT PlateN, Date FROM UNREGISTERED WHERE PlateN = '" + res + "' LIMIT 1;"
             cursor.execute(sql2)
-            result2 = cursor.fetchall()
+            result2 = cursor.fetchone()
     
-            print("Plate saved in the Unregistered Database")
+            print("Saved to Database: Unregistered")
+            
             print(result2)
+
             
     else:
         print("Registered!")
@@ -168,9 +180,9 @@ else:
         else:
             cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', new_img)
     
-            print("Plate saved in the Registered Database.")
+            print("Saved to Database: Registered")
 
-            sql1 = "SELECT AgencyLoc FROM `Dummy Database` WHERE PlateN = '" + res + "'"
+            sql1 = "SELECT AgencyLoc FROM `Dummy Database` WHERE PlateN = '" + res + "' LIMIT 1"
 
             cursor.execute(sql1)
         
