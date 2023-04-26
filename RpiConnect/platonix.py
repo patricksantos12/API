@@ -8,6 +8,8 @@ import requests
 import pycurl
 import certifi
 from io import BytesIO
+from urllib.parse import urlencode
+import subprocess
 # import mysql.connector
 
 haarcascade = "model/haarcascade_plate_number.xml"
@@ -132,7 +134,10 @@ res1 = plate.translate(mapping)
 res = str(res1)
 
 res = res.replace(" ","")   
- 
+
+findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
+response = subprocess.check_output(["curl","-X","GET",findPlate])
+
 if res == "":
     
     while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
@@ -141,36 +146,40 @@ if res == "":
     else:
         cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', new_img)
         print("Plate is Unrecognized!")
-        print("Saved to folder: Unrecognized") 
+        print("Saved to Folder: Unrecognized") 
 
 elif res != "":
     print("Plate Number: ",str(res))
     
-    if rows == None:
+    if response == None:
         while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
             b += 1
         else:
             cv2.imwrite("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg", new_img)
                 
-            print("Unregistered!")
-    
+            print("Plate is Unregistered!")
+            
+            saveUnreg = "http://192.168.100.212:3000/api/v1/platonix/vehicle/addVehicle/"+str(res)
+            response1 = subprocess.check_output(["curl","-X","POST",saveUnreg])
             print("Saved to Database: Unregistered")
+            print("Saved to Folder: Unregistered")
             
             print(result2)
 
             
     else:
+        print(response)
         print("Registered!")
-
-        print(rows)
     
         while os.path.exists("plates/processed/Registered/" + plateFilename + str(a) + ".jpg"):
             a += 1
         
         else:
             cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', new_img)
-    
+            saveReg = "http://192.168.100.212:3000/api/v1/platonix/vehicle/addVehicle/"+str(res)
+            response1 = subprocess.check_output(["curl","-X","POST",saveReg])
             print("Saved to Database: Registered")
+            print("Saved to Folder: Registered")
 
             name = str(result1)
         
