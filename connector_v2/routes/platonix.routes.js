@@ -30,5 +30,5 @@ module.exports = app => {
     // // Delete all platonix
     // router.delete("/", platonix.deleteAll);
   
-    app.use('/api/v1/platonix', router);
+    app.use('/api/v1/platonix/vehicle', router);
   };

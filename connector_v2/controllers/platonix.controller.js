@@ -1,4 +1,4 @@
-const Platonix = require("../models/platonix.model.js");
+const Platonix = require("../models/platonix.model");
 
 // Create and Save a new platonix
 exports.create = (req, res) => {

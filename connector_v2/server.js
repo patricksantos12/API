@@ -21,7 +21,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to PLATONIX application." });
 });
 
-require("./routes/platonix.routes.js")(app);
+require("./routes/platonix.routes")(app);
+require("./routes/platonixUser.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

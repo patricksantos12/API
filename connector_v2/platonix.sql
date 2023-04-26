@@ -10,3 +10,10 @@ create table platonixApp (
     carCityLocation varchar(255),
     PRIMARY KEY (platonixID)
 );
+
+create table platonixAppUser (
+    userID int NOT NULL AUTO_INCREMENT,
+    platonixUser varchar(255),
+    platonixPass varchar(255),
+    PRIMARY KEY (userID)
+);
