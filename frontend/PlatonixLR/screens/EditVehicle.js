@@ -37,10 +37,10 @@ const EditVehicle = ({ route, navigation }) => {
     })
       .then(response => response.json())
       .then(() => {
-        navigation.goBack();
+        navigation.navigate('TEMenu'); // navigate to TEMenu screen
       })
       .catch(error => console.error(error));
-  };
+};
 
   if (!vehicle) {
     return null;

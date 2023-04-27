@@ -1,71 +1,99 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-
-// formik
-import {Formik} from 'formik';
-
-// icons
+import { Formik } from 'formik';
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons';
-
 import {
-    StyledContainer,
-    InnerContainer,
-    SubTitle,
-    Colors,
-    Line,
-    HelpLogo,
-    PageTitle1,
-    PageTitle2,
-    PageTitle3
-
+  StyledContainer,
+  InnerContainer,
+  SubTitle,
+  Colors,
+  Line,
+  HelpLogo,
+  PageTitle1,
+  PageTitle2,
+  PageTitle3,
+  Input,
 } from './../components/styles';
+import { View, FlatList, Text, TouchableOpacity, TextInput } from 'react-native';
 
-import {View, FlatList, Text, TouchableOpacity} from 'react-native';
+const { brand, darkLight, primary } = Colors;
 
-// colors
-const {brand, darkLight, primary} = Colors;
-
-// keyboard avoiding view
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
-const TEDeleteUpdate = ({navigation}) => {
-    const [vehicles, setVehicles] = useState([]);
+const TEDeleteUpdate = ({ navigation }) => {
+  const [vehicles, setVehicles] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
-    useEffect(() => {
-        fetch('http://192.168.100.212:3000/api/v1/platonix/vehicle/search/all')
-            .then(response => response.json())
-            .then(data => setVehicles(data))
-            .catch(error => console.error(error))
-    }, []);
+  useEffect(() => {
+    fetch('http://192.168.100.212:3000/api/v1/platonix/vehicle/search/all')
+      .then((response) => response.json())
+      .then((data) => setVehicles(data))
+      .catch((error) => console.error(error));
+  }, []);
 
-    const handleDelete = (platonixID) => {
-        fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/remove/${platonixID}`, {
-          method: 'DELETE',
-        })
-          .then(response => response.json())
-          .then(() => {
-            const newVehicles = vehicles.filter(vehicle => vehicle.platonixID !== platonixID);
-            setVehicles(newVehicles);
-          })
-          .catch(error => console.error(error));
-    }
+  const handleDelete = (platonixID) => {
+    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/remove/${platonixID}`, {
+      method: 'DELETE',
+    })
+      .then((response) => response.json())
+      .then(() => {
+        const newVehicles = vehicles.filter((vehicle) => vehicle.platonixID !== platonixID);
+        setVehicles(newVehicles);
+      })
+      .catch((error) => console.error(error));
+  };
 
-    const handleUpdate = (platonixID) => {
-        navigation.navigate('EditVehicle', {platonixID});
-    }
+  const handleUpdate = (platonixID) => {
+    navigation.navigate('EditVehicle', { platonixID });
+  };
 
+  const filteredVehicles = vehicles.filter((vehicle) => {
+    const searchTermLower = searchQuery.toLowerCase();
+    const plateNumberLower = vehicle.plateNumber.toLowerCase();
+    const carRegistrationStatusLower = vehicle.carRegistrationStatus.toLowerCase();
+    const carColorLower = vehicle.carColor.toLowerCase();
+    const carMakerLower = vehicle.carMaker.toLowerCase();
+    const carModelLower = vehicle.carModel.toLowerCase();
+    const carCityLocationLower = vehicle.carCityLocation.toLowerCase();
     return (
-        <StyledContainer>
-            <StatusBar style="dark" />
-            <InnerContainer>
-                <PageTitle3>Edit or Delete</PageTitle3>
-                <Line />
-                <SubTitle>Text Entries</SubTitle>
-                <Line />
+      plateNumberLower.includes(searchTermLower) ||
+      carRegistrationStatusLower.includes(searchTermLower) ||
+      carColorLower.includes(searchTermLower) ||
+      carMakerLower.includes(searchTermLower) ||
+      carModelLower.includes(searchTermLower) ||
+      carCityLocationLower.includes(searchTermLower)
+    );
+  });
+
+  return (
+    <StyledContainer>
+      <StatusBar style="dark" />
+      <InnerContainer>
+        <PageTitle3>Edit or Delete Text Entries</PageTitle3>
+        <Line />
+        <SubTitle>Search Here</SubTitle>
+        <Line />
+        <TextInput
+            style={{
+                height: 50,
+                width: 300,
+                borderWidth: 2,
+                borderRadius: 10,
+                borderColor: 'black',
+                paddingLeft: 10,
+                paddingRight: 10,
+                fontSize: 18,
+                backgroundColor: '#fff',
+                marginBottom: 20
+            }}
+            placeholder="Search"
+            onChangeText={(query) => setSearchQuery(query)}
+            value={searchQuery}
+/>
                 <FlatList
-                    data={vehicles}
-                    renderItem={({item}) => (
-                        <View>
+          data={filteredVehicles} // <-- Use filteredVehicles instead of vehicles
+          renderItem={({ item }) => (
+            <View>
                             <Text>Plate Number: {item.plateNumber}</Text>
                             <Text>Registration Status: {item.carRegistrationStatus}</Text>
                             <Text>Color: {item.carColor}</Text>
