@@ -80,7 +80,7 @@ const TEAdd = ({navigation}) => {
   initialValues={{plateNumber: '', carRegistrationStatus: '', carColor: '', carMaker: '', carModel: '', carCityLocation: '' }}
   validationSchema={validationSchema}
   onSubmit={(values, { setSubmitting, resetForm }) =>  {
-    axios.post('http://192.168.100.210:3000/api/v1/platonix/vehicle/addVehicle', {
+    axios.post('http://192.168.100.212:3000/api/v1/platonix/vehicle/addVehicle', {
       plateNumber: values.plateNumber,
       carRegistrationStatus: values.carRegistrationStatus,
       carColor: values.carColor,

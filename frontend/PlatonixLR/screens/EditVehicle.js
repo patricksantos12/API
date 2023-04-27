@@ -21,19 +21,21 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 // colors
 const { brand, darkLight, primary } = Colors;
 
+import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
+
 const EditVehicle = ({ route, navigation }) => {
   const { platonixID } = route.params;
   const [vehicle, setVehicle] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.100.210:3000/api/v1/platonix/vehicle/search/id/${platonixID}`)
+    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/search/id/${platonixID}`)
       .then(response => response.json())
       .then(data => setVehicle(data))
       .catch(error => console.error(error));
   }, [platonixID]);
 
   const handleUpdate = (values) => {
-    fetch(`http://192.168.100.210:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
+    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -52,6 +54,7 @@ const EditVehicle = ({ route, navigation }) => {
   }
 
   return (
+    <KeyboardAvoidingWrapper>
     <StyledContainer>
       <StatusBar style="dark" />
       <InnerContainer>
@@ -114,6 +117,7 @@ const EditVehicle = ({ route, navigation }) => {
         </Formik>
       </InnerContainer>
     </StyledContainer>
+    </KeyboardAvoidingWrapper>
   );
 };
 

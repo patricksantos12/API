@@ -29,7 +29,7 @@ const TEDeleteUpdate = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetch('http://192.168.100.210:3000/api/v1/platonix/vehicle/search/all')
+    fetch('http://192.168.100.212:3000/api/v1/platonix/vehicle/search/all')
       .then((response) => response.json())
       .then((data) => setVehicles(data))
       .catch((error) => console.error(error));
@@ -44,7 +44,7 @@ const TEDeleteUpdate = ({ navigation }) => {
         {
           text: 'OK',
           onPress: () => {
-            fetch(`http://192.168.100.210:3000/api/v1/platonix/vehicle/remove/${platonixID}`, {
+            fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/remove/${platonixID}`, {
               method: 'DELETE',
             })
               .then((response) => response.json())
@@ -72,6 +72,13 @@ const TEDeleteUpdate = ({ navigation }) => {
     const carMakerLower = vehicle.carMaker.toLowerCase();
     const carModelLower = vehicle.carModel.toLowerCase();
     const carCityLocationLower = vehicle.carCityLocation.toLowerCase();
+  
+    if (searchTermLower === "registered") {
+      return carRegistrationStatusLower === "registered";
+    } else if (searchTermLower === "unregistered") {
+      return carRegistrationStatusLower === "unregistered";
+    }
+  
     return (
       plateNumberLower.includes(searchTermLower) ||
       carRegistrationStatusLower.includes(searchTermLower) ||
@@ -81,6 +88,7 @@ const TEDeleteUpdate = ({ navigation }) => {
       carCityLocationLower.includes(searchTermLower)
     );
   });
+  
 
   return (
     <StyledContainer>
