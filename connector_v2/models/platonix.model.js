@@ -132,7 +132,7 @@ Platonix.updateById = (platonixID, platonix, result) => {
 };
 
 Platonix.remove = (platonixID, result) => {
-  sql.query("DELETE FROM platonixApp WHERE id = ?", platonixID, (err, res) => {
+  sql.query("DELETE FROM platonixApp WHERE platonixID = ?", platonixID, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
