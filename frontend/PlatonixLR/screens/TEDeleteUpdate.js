@@ -10,28 +10,13 @@ import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons';
 import {
     StyledContainer,
     InnerContainer,
-    PageLogo,
-    PageTitle,
     SubTitle,
-    StyledFormArea,
-    LeftIcon,
-    StyledInputLabel,
-    StyledTextInput,
-    RightIcon,
-    StyledButton,
-    ButtonText,
-    PicturesLogo,
     Colors,
-    MsgBox,
     Line,
-    ExtraView,
-    ExtraText,
-    TextLink,
-    TextLinkContent,
     HelpLogo,
     PageTitle1,
     PageTitle2,
-    PageTitle3,
+    PageTitle3
 
 } from './../components/styles';
 
@@ -63,36 +48,42 @@ const TEDeleteUpdate = ({navigation}) => {
             setVehicles(newVehicles);
           })
           .catch(error => console.error(error));
-      }
-      
+    }
+
+    const handleUpdate = (platonixID) => {
+        navigation.navigate('EditVehicle', {platonixID});
+    }
 
     return (
-            <StyledContainer>
-                <StatusBar style="dark" />
-                <InnerContainer>
-                    <PageTitle3>Edit or Delete</PageTitle3>
-                    <Line />
-                    <SubTitle>Text Entries</SubTitle>
-                    <Line />
-                    <FlatList
-                        data={vehicles}
-                        renderItem={({item}) => (
-                            <View>
-                                <Text>Plate Number: {item.plateNumber}</Text>
-                                <Text>Registration Status: {item.carRegistrationStatus}</Text>
-                                <Text>Color: {item.carColor}</Text>
-                                <Text>Maker: {item.carMaker}</Text>
-                                <Text>Model: {item.carModel}</Text>
-                                <Text>City Location: {item.carCityLocation}</Text>
-                                <TouchableOpacity onPress={() => handleDelete(item.platonixID)}>
-                                    <Text style={{color: 'red'}}>Delete</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        keyExtractor={item => item.platonixID.toString()}
-                    />
-                </InnerContainer>
-            </StyledContainer>
+        <StyledContainer>
+            <StatusBar style="dark" />
+            <InnerContainer>
+                <PageTitle3>Edit or Delete</PageTitle3>
+                <Line />
+                <SubTitle>Text Entries</SubTitle>
+                <Line />
+                <FlatList
+                    data={vehicles}
+                    renderItem={({item}) => (
+                        <View>
+                            <Text>Plate Number: {item.plateNumber}</Text>
+                            <Text>Registration Status: {item.carRegistrationStatus}</Text>
+                            <Text>Color: {item.carColor}</Text>
+                            <Text>Maker: {item.carMaker}</Text>
+                            <Text>Model: {item.carModel}</Text>
+                            <Text>City Location: {item.carCityLocation}</Text>
+                            <TouchableOpacity onPress={() => handleDelete(item.platonixID)}>
+                                <Text style={{color: 'red'}}>Delete</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleUpdate(item.platonixID)}>
+                                <Text style={{color: 'blue'}}>Edit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    keyExtractor={item => item.platonixID.toString()}
+                />
+            </InnerContainer>
+        </StyledContainer>
     );
 };
 
