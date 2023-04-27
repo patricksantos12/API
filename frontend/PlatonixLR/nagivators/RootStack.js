@@ -13,6 +13,7 @@ import ImageProcessing from '../screens/ImageProcessing';
 import DataAnalytics from '../screens/DataAnalytics';
 import TEAdd from '../screens/TEAdd';
 import TEMenu from '../screens/TEMenu';
+import TEDeleteUpdate from '../screens/TEDeleteUpdate';
 
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,7 @@ const RootStack = () => {
                 <Stack.Screen name="DataAnalytics" component={DataAnalytics} />
                 <Stack.Screen name="TEAdd" component={TEAdd} />
                 <Stack.Screen name="TEMenu" component={TEMenu} />
+                <Stack.Screen name="TEDeleteUpdate" component={TEDeleteUpdate} />
 
             </Stack.Navigator>
         </NavigationContainer>

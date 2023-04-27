@@ -72,7 +72,7 @@ Platonix.getAllRegistered = result => {
 
     console.log("car registered: ", res);
     result(null, res);
-  });
+  };
 };
 
 // Platonix.updateById = (id, tutorial, result) => {

@@ -73,11 +73,8 @@ const TEMenu = ({navigation}) => {
                                     <ButtonText>Add Text Entry</ButtonText>
                                 </StyledButton>
 
-                                <StyledButton onPress={handleSubmit}>
-                                    <ButtonText>Edit/Update Text Entry</ButtonText>
-                                </StyledButton>
-                                <StyledButton onPress={handleSubmit}>
-                                    <ButtonText>Delete Text Entry</ButtonText>
+                                <StyledButton onPress={() => {navigation.navigate('TEDeleteUpdate')}}>
+                                    <ButtonText>Edit and Delete Text Entries</ButtonText>
                                 </StyledButton>
                             </StyledFormArea>
 
