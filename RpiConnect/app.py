@@ -1,29 +1,25 @@
 import cv2
+import time
+
+src = 'rtspsrc location=rtsp://192.168.100.210:3000/stream latency=200 ! application/x-rtp,encoding-name=H265 ! rtph265depay ! h265parse ! nvv4l2decoder ! nvvidconv ! video/x-raw,format=BGRx ! #videoconvert ! video/x-raw,format=BGR ! appsink drop=1'
 
 
-video = cv2.VideoCapture("rtsp://cisco:cisco@192.168.100.210:554/Streaming/Channels/101")
-
-cap.set(3, 640) # width
-cap.set(4, 480) #height
-
-min_area = 500
 
 while True:
-    success, img = video.read()
-
-
-    for (x,y,w,h) in plates:
-        area = w * h
-
-        if area > min_area:
-            cv2.rectangle(img, (x,y), (x+w, y+h), (0,255,0), 2)
-            cv2.putText(img, "Plate Number", (x,y-5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
-            img_roi = img[y: y+h, x:x+w]
-            
-    cv2.imshow("Result", img)
-    
-    if cv2.waitKey(1) == ord('q'):
-        break
-        
-video.release()
-cv2.destroyAllWindows()
+	stream = cv2.VideoCapture(src, cv2.CAP_GSTREAMER)
+	if not stream.isOpened():
+		print('Source not Available')
+		time.sleep(1)
+	else:
+		print('source connected')
+		while True:
+			ret, frame = stream.read()
+			if not ret:
+				print ('Failed to read from stream')
+				stream.release()
+				break
+				
+				
+			else:
+				cv2.imshow('Test', frame)
+				cv2.waitkey(1)

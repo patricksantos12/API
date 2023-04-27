@@ -56,12 +56,11 @@ while True:
             try:
                 img_roi
             except NameError:
-                
+                pass
                 while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
                     c += 1
                     
                 else:
-                    print('Plate is Unrecognized!')
                     cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img)
                     cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
                     break
