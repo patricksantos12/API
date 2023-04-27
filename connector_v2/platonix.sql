@@ -1,4 +1,4 @@
-create database platonix;
+create database platonix CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 create table platonixApp (
     platonixID int NOT NULL AUTO_INCREMENT,
