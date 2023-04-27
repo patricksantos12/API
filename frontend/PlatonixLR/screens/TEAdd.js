@@ -91,6 +91,7 @@ const TEAdd = ({navigation}) => {
       .then(response => {
         console.log(response.data);
         // handle success, e.g. show success message to the user
+        alert("Successfully added!"); // adding the alert message
         resetForm();
       })
       .catch(error => {
