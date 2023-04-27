@@ -10,7 +10,9 @@ import certifi
 from io import BytesIO
 from urllib.parse import urlencode
 import subprocess
+import re
 # import mysql.connector
+#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
 
 haarcascade = "model/haarcascade_plate_number.xml"
 
@@ -151,47 +153,30 @@ if res == "":
 elif res != "":
     print("Plate Number: ",str(res))
     
-    if response == None:
-        while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
-            b += 1
-        else:
-            cv2.imwrite("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg", new_img)
-                
-            print("Plate is Unregistered!")
-            
-            saveUnreg = "http://192.168.100.212:3000/api/v1/platonix/vehicle/addVehicle/"+str(res)
-            response1 = subprocess.check_output(["curl","-X","POST",saveUnreg])
-            print("Saved to Database: Unregistered")
-            print("Saved to Folder: Unregistered")
-            
-            print(result2)
+    pattern =  '"REGISTERED"'
 
-            
-    else:
+    match = re.search(pattern, response.decode())
+       
+    if match:
+        value = match.group()
+        
         print(response)
-        print("Registered!")
     
         while os.path.exists("plates/processed/Registered/" + plateFilename + str(a) + ".jpg"):
             a += 1
         
         else:
             cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', new_img)
-            saveReg = "http://192.168.100.212:3000/api/v1/platonix/vehicle/addVehicle/"+str(res)
-            response1 = subprocess.check_output(["curl","-X","POST",saveReg])
-            print("Saved to Database: Registered")
             print("Saved to Folder: Registered")
 
-            name = str(result1)
-        
-            name = name.replace("')","")
-    
-            name = name.replace("('","")
-    
-            name = name.replace(",)","")
-    
-            name = name.replace("(,","")
-    
-            name = name.replace("'","")
+    else:
+        while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
+            b += 1
+        else:
+            cv2.imwrite("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg", new_img)
+            
+            print(response)
+            print("Saved to Folder: Unregistered")
         
 cap.release()
 cv2.destroyAllWindows()
