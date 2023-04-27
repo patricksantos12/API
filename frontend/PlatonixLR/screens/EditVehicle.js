@@ -9,7 +9,12 @@ import {
   Line,
   PageTitle1,
   PageTitle2,
-  PageTitle3
+  PageTitle3,
+  TEButton1,
+  TEButton2,
+  TESubTitle,
+  StyledTextInput,
+  TEStyledTextInput
 } from './../components/styles';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 
@@ -21,14 +26,14 @@ const EditVehicle = ({ route, navigation }) => {
   const [vehicle, setVehicle] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/search/id/${platonixID}`)
+    fetch(`http://192.168.100.210:3000/api/v1/platonix/vehicle/search/id/${platonixID}`)
       .then(response => response.json())
       .then(data => setVehicle(data))
       .catch(error => console.error(error));
   }, [platonixID]);
 
   const handleUpdate = (values) => {
-    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
+    fetch(`http://192.168.100.210:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -65,45 +70,45 @@ const EditVehicle = ({ route, navigation }) => {
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
-              <Text>Plate Number:</Text>
-              <TextInput
+              <TESubTitle>Plate Number:</TESubTitle>
+              <TEStyledTextInput
                 onChangeText={handleChange('plateNumber')}
                 onBlur={handleBlur('plateNumber')}
                 value={values.plateNumber}
               />
-              <Text>Registration Status:</Text>
-              <TextInput
+              <TESubTitle>Registration Status:</TESubTitle>
+              <TEStyledTextInput
                 onChangeText={handleChange('carRegistrationStatus')}
                 onBlur={handleBlur('carRegistrationStatus')}
                 value={values.carRegistrationStatus}
               />
-              <Text>Color:</Text>
-              <TextInput
+              <TESubTitle>Color:</TESubTitle>
+              <TEStyledTextInput
                 onChangeText={handleChange('carColor')}
                 onBlur={handleBlur('carColor')}
                 value={values.carColor}
               />
-              <Text>Maker:</Text>
-              <TextInput
+              <TESubTitle>Maker:</TESubTitle>
+              <TEStyledTextInput
                 onChangeText={handleChange('carMaker')}
                 onBlur={handleBlur('carMaker')}
                 value={values.carMaker}
               />
-              <Text>Model:</Text>
-              <TextInput
+              <TESubTitle>Model:</TESubTitle>
+              <TEStyledTextInput
                 onChangeText={handleChange('carModel')}
                 onBlur={handleBlur('carModel')}
                 value={values.carModel}
               />
-              <Text>City Location:</Text>
-              <TextInput
+              <TESubTitle>City Location:</TESubTitle>
+              <TEStyledTextInput
                 onChangeText={handleChange('carCityLocation')}
                 onBlur={handleBlur('carCityLocation')}
                 value={values.carCityLocation}
               />
-              <TouchableOpacity onPress={handleSubmit}>
-                <Text style={{ color: 'blue' }}>Save Changes</Text>
-              </TouchableOpacity>
+              <TEButton2 onPress={handleSubmit}>
+                <Text style={{ color: 'white' }}>Save Changes</Text>
+              </TEButton2>
             </View>
           )}
         </Formik>
