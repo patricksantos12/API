@@ -14,7 +14,10 @@ import {
   TEButton2,
   TESubTitle,
   StyledTextInput,
-  TEStyledTextInput
+  TEStyledTextInput,
+  StyledButtonBack,
+  ButtonText,
+  PicturesLogo
 } from './../components/styles';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 
@@ -116,6 +119,7 @@ const EditVehicle = ({ route, navigation }) => {
           )}
         </Formik>
       </InnerContainer>
+      <PicturesLogo resizeMode="contain" source={require('./../assets/img/changes.png')}/>
     </StyledContainer>
     </KeyboardAvoidingWrapper>
   );

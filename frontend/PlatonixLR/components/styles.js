@@ -19,10 +19,12 @@ const {primary, secondary, tertiary, darkLight, brand, green, red} = Colors;
 
 export const StyledContainer = styled.View`
     flex: 1;
+    height: 100%;
     padding: 25px;
-    padding-top: ${StatusBarHeight + 30}px;
+    padding-top: ${StatusBarHeight + 10}px;
     background-color: ${primary};
 `
+
 export const InnerContainer = styled.View`
     flex: 1;
     width: 100%;
@@ -121,11 +123,10 @@ export const PageTitle3 = styled.Text`
 
 export const SubTitle = styled.Text`
     font-size: 18px;
-    margin-bottom: 20px;
     letter-spacing: 1px;
     font-weight: bold;
     color: ${tertiary};
-    margin: auto;
+;
     
 
     ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
@@ -144,6 +145,34 @@ export const SubTitle1 = styled.Text`
 
     ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
 `;
+export const SubTitle2 = styled.Text`
+    font-size: 18px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: ${tertiary};
+    margin: auto;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    
+
+    ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
+`;
+
+export const SubTitle3 = styled.Text`
+    font-size: 18px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: ${brand};
+    margin: auto;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    
+
+    ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
+`;
+
 export const TESubTitle = styled.Text`
     font-size: 15px;
     letter-spacing: 1px;
@@ -216,6 +245,26 @@ export const StyledButton = styled.TouchableOpacity`
     justify-content: center;
     `}
 `;
+export const StyledButtonBack = styled.TouchableOpacity`
+    padding: 15px;
+    background-color: ${brand};
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-vertical: 5px;
+    height: 60px;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+
+    ${(props) => props.help == true && `
+    background-color: ${green};
+    flex-direction: row;
+    justify-content: center;
+    `}
+`;
+
+
 export const TEButton = styled.TouchableOpacity`
     padding: 10px;
     background-color: ${red};

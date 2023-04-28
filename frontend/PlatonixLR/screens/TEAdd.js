@@ -32,7 +32,8 @@ import {
     TextLink,
     TextLinkContent,
     PageTitle1,
-    SubTitle1
+    SubTitle1,
+    PicturesLogo
 
 } from '../components/styles';
 
@@ -71,7 +72,7 @@ const TEAdd = ({navigation}) => {
         <StyledContainer>
             <StatusBar style="dark" />
             <InnerContainer>
-           
+            <PicturesLogo resizeMode="contain" source={require('./../assets/img/addTE.png')}/>
                 <PageTitle1>Text Entry Processing</PageTitle1>
                 <Line />
                 <SubTitle1>Enter Text here</SubTitle1>

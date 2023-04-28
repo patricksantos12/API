@@ -45,7 +45,7 @@ const {brand, darkLight, primary} = Colors;
 // keyboard avoiding view
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
-const TEMenu = ({navigation}) => {
+const DAMenu = ({navigation}) => {
 
     const [hidePassword, setHidePassword] = useState(true);
 
@@ -56,9 +56,9 @@ const TEMenu = ({navigation}) => {
                 <StatusBar style="dark" />
                 <InnerContainer>
                 <PageLogo resizeMode="cover" source={require('./../assets/img/platonix.png')}/>
-                    <PageTitle3>Text Entry Processing</PageTitle3>
+                    <PageTitle3>Data Analytics 2023</PageTitle3>
                     <Line />
-                    <SubTitle>Pick from the options below</SubTitle>
+                    <SubTitle>Pick from the options</SubTitle>
                     <Line />
 
                     <Formik
@@ -70,16 +70,16 @@ const TEMenu = ({navigation}) => {
                         {({handleChange, handleBlur, handleSubmit, values}) => (
                             <StyledFormArea>
                                 
-                                <PicturesLogo resizeMode="contain" source={require('./../assets/img/addTE.png')}/>
-                                <StyledButton onPress={() => {navigation.navigate('TEAdd')}}>
-                                    <ButtonText>Add Text Entry</ButtonText>
-                                </StyledButton>
+                            <PicturesLogo resizeMode="contain" source={require('./../assets/img/Location.png')}/>
+                            <StyledButton onPress={() => {navigation.navigate('DALocation')}}>
+                                <ButtonText>By Agency Location</ButtonText>
+                            </StyledButton>
 
-                                <PicturesLogo resizeMode="contain" source={require('./../assets/img/editdelTE.png')}/>
-                                <StyledButton onPress={() => {navigation.navigate('TEDeleteUpdate')}}>
-                                    <ButtonText>Edit and Delete Text Entries</ButtonText>
-                                </StyledButton>
-                            </StyledFormArea>
+                            <PicturesLogo resizeMode="contain" source={require('./../assets/img/Registration.png')}/>
+                            <StyledButton onPress={() => {navigation.navigate('DARegStatus')}}>
+                                <ButtonText>By Registration Status</ButtonText>
+                            </StyledButton>
+                        </StyledFormArea>
                         )}
                     </Formik>
                 </InnerContainer>
@@ -94,4 +94,4 @@ const TEMenu = ({navigation}) => {
     );
 };
 
-export default TEMenu;
+export default DAMenu;

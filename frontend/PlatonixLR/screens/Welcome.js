@@ -69,7 +69,7 @@ const Menu = ({navigation}) => {
                     </StyledButton>
 
                     <PicturesLogo resizeMode="contain" source={require('./../assets/img/DataAnalytics.png')}/>
-                    <StyledButton onPress={() => {navigation.navigate('DataAnalytics')}}>
+                    <StyledButton onPress={() => {navigation.navigate('DAMenu')}}>
                         <ButtonText>Data Analytics</ButtonText>
                     </StyledButton>
 

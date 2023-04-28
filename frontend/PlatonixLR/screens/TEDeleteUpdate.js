@@ -16,7 +16,11 @@ import {
   Input,
   TEButton,
   TEButton1,
-  TESubTitle
+  TESubTitle,
+  StyledButton,
+  ButtonText,
+  StyledButtonBack,
+  PicturesLogo
 } from './../components/styles';
 import { View, FlatList, Text, TouchableOpacity, TextInput } from 'react-native';
 
@@ -94,6 +98,7 @@ const TEDeleteUpdate = ({ navigation }) => {
     <StyledContainer>
       <StatusBar style="dark" />
       <InnerContainer>
+      <PicturesLogo resizeMode="contain" source={require('./../assets/img/editdelTE.png')}/>
         <PageTitle3>Edit or Delete </PageTitle3>
         <Line />
         <SubTitle>Text Entries</SubTitle>
@@ -134,10 +139,18 @@ const TEDeleteUpdate = ({ navigation }) => {
               </TEButton>
             </View>
           </View>
+                
                     )}
                     keyExtractor={item => item.platonixID.toString()}
                 />
             </InnerContainer>
+
+            <View>
+              <Line />
+            <StyledButtonBack onPress={() => {navigation.navigate('TEAdd')}}>
+                        <ButtonText>Add Text Entry</ButtonText>
+                    </StyledButtonBack>
+            </View>
         </StyledContainer>
     );
 };
