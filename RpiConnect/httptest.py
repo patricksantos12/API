@@ -1,76 +1,190 @@
-import io
-import socket
-import struct
-import subprocess
-import time
+import os
 import cv2
 import sys
+import imutils
+import numpy as np
+import pytesseract
+import requests
+import pycurl
+import certifi
+from io import BytesIO
+from urllib.parse import urlencode
+import subprocess
+import re
+import socket
+import pickle
 
-class SplitFrames(object):
-    def __init__(self, connection):
-        self.connection = connection
-        self.stream = io.BytesIO()
-        self.count = 0
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
 
-    def write(self, buf):
-        if buf is None:
-            return
-        if not isinstance(buf, bytes):
-            buf = bytes(buf)
-        if buf.startswith(b'\xff\xd8'):
-            # Start of new frame; send the old one's length
-            # then the data
-            size = self.stream.tell()
-            if size > 0:
-                self.connection.write(struct.pack('<L', size))
-                self.connection.flush()
-                self.stream.seek(0)
-                self.connection.write(self.stream.read(size))
-                self.count += 1
-                self.stream.seek(0)
-        self.stream.write(buf)
+serverip="0.0.0.0"
+serverport=8080
 
-# Start the program you want to stream
-proc = subprocess.Popen(['python', 'platonix.py'], stdout=subprocess.PIPE)
-
-client_socket = socket.socket()
-try:
-    client_socket.connect(('0.0.0.0', 8080))
-except ConnectionRefusedError:
-    print('Unable to connect to server')
-    sys.exit(1)
-connection = client_socket.makefile('wb')
-
-output = SplitFrames(connection)
+haarcascade = "model/haarcascade_plate_number.xml"
 
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-cap.set(cv2.CAP_PROP_FPS, 30)
 
-time.sleep(2)  # Wait for the camera to warm up
-start = time.time()
+cap.set(3, 640) # width
+cap.set(4, 480) #height
+
+min_area = 500
+
+plateFilename = "plate"
+
+count = 1
+i = 1
+a = 1
+b = 1
+c = 1
+
 while True:
-    # Read a frame from the camera
-    ret, frame = cap.read()
-    if not ret:
+    success, img = cap.read()
+
+    plate_cascade = cv2.CascadeClassifier(haarcascade)
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    plates = plate_cascade.detectMultiScale(img_gray, 1.1, 4)
+
+    for (x,y,w,h) in plates:
+        area = w * h
+
+        if area > min_area:
+            cv2.rectangle(img, (x,y), (x+w, y+h), (0,255,0), 2)
+            cv2.putText(img, "Plate Number", (x,y-5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
+            img_roi = img[y: y+h, x:x+w]
+            
+    cv2.imshow("Platonix", img)
+    
+    ret, buffer = cv2.imencode(".jpg", img,[int(cv2.IMWRITE_JPEG_QUALITY),30])    
+    x_as_bytes = pickle.dumps(buffer)
+    
+    s.sendto(x_as_bytes,(serverip , serverport))
+    
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        while os.path.exists('plates/captured/' + plateFilename + str(count) + '.jpg'):
+            count += 1
+        else:    
+            try:
+                img_roi
+            except NameError:
+                pass
+                while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+                    c += 1
+                    
+                else:
+                    cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img)
+                    cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
+                    break
+            else:
+                cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img_roi)
+                cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
+            break
         break
+    
+    
+image = cv2.imread('plates/captured/' + plateFilename + str(count) + '.jpg')
+image = imutils.resize(image, width = 300)
 
-    # Display the captured frame
-    cv2.imshow('frame', frame)
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Capture the output of the program you want to stream
-    out = proc.stdout.read()
 
-    # Pass the output through the SplitFrames class to send the video frames over the network
-    output.write(out)
+gray_image = cv2.bilateralFilter(gray_image, 11, 17, 17)
 
-    # Exit if the 'q' key is pressed
-    if cv2.waitKey(1) == ord('c'):
+
+edged = cv2.Canny(gray_image, 30, 200)
+
+
+cnts,new = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+
+image1=image.copy()
+
+try:
+    cv2.drawContours(image1,cnts,-1,(0,255,0),3)   
+except cv2.error as e:
+    pass
+    
+cnts = sorted(cnts, key = cv2.contourArea, reverse = True) [:30]
+screenCnt = 0
+
+image2 = image.copy()
+
+try:
+    cv2.drawContours(image2,cnts,-1,(0,255,0),3)
+except cv2.error as e:
+    pass
+    
+for c in cnts:
+    perimeter = cv2.arcLength(c, True)
+    approx = cv2.approxPolyDP(c, 0.018 * perimeter, True)
+    
+    if len(approx) == 4:
+        screenCnt = approx
+        x,y,w,h = cv2.boundingRect(c)
+        new_img = image[y:y + h, x:x + w]
+        
+        while os.path.exists("plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg"):
+            i += 1
+        else:
+            cv2.imwrite("plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg", new_img)
+            cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
+            break
         break
+try:
+    cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
+except cv2.error as e:
+    pass
+    
+Cropped_loc = "plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg"
 
-# Close all windows and release resources
-cv2.destroyAllWindows()
+
+cv2.imread(Cropped_loc)
+plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
+
+
+
+mapping = dict.fromkeys(range(32))
+res1 = plate.translate(mapping)
+
+res = str(res1)
+
+res = res.replace(" ","")   
+
+findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
+response = subprocess.check_output(["curl","-X","GET",findPlate])
+
+if res == "":
+    
+    while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+        c += 1
+    else:
+        cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
+        print("Plate is Unrecognized!")
+        print("Saved to Folder: Unrecognized")
+
+elif res != "":
+    print("Plate Number: ",str(res))
+    
+    pattern =  '"REGISTERED"'
+
+    match = re.search(pattern, response.decode())
+       
+    print(response)
+    
+    if match:
+        while os.path.exists("plates/processed/Registered/" + plateFilename + str(a) + ".jpg"):
+            a += 1
+        else:
+            cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', image)
+            print("Saved to Folder: Registered")
+
+    else:
+        while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
+            b += 1
+        else:
+            cv2.imwrite("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
+            
+            print("Saved to Folder: Unregistered")
+
+del res
 cap.release()
-connection.close()
-client_socket.close()
+cv2.destroyAllWindows()

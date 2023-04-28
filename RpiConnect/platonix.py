@@ -11,10 +11,16 @@ from io import BytesIO
 from urllib.parse import urlencode
 import subprocess
 import re
-# import mysql.connector
-#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
+import socket
+import pickle
 
-haarcascade = "model/haarcascade_plate_number.xml"
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
+
+serverip="0.0.0.0"
+serverport=8080
+
+haarcascade = "/home/cisco/Desktop/API/RpiConnect/model/haarcascade_plate_number.xml"
 
 cap = cv2.VideoCapture(0)
 
@@ -47,7 +53,12 @@ while True:
             cv2.putText(img, "Plate Number", (x,y-5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
             img_roi = img[y: y+h, x:x+w]
             
-    cv2.imshow("Result", img)
+    cv2.imshow("Platonix", img)
+    
+    ret, buffer = cv2.imencode(".jpg", img,[int(cv2.IMWRITE_JPEG_QUALITY),30])    
+    x_as_bytes = pickle.dumps(buffer)
+    
+    s.sendto(x_as_bytes,(serverip , serverport))
     
     if cv2.waitKey(1) & 0xFF == ord('c'):
         while os.path.exists('plates/captured/' + plateFilename + str(count) + '.jpg'):
@@ -129,6 +140,8 @@ Cropped_loc = "plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jp
 cv2.imread(Cropped_loc)
 plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
 
+
+
 mapping = dict.fromkeys(range(32))
 res1 = plate.translate(mapping)
 
@@ -136,40 +149,35 @@ res = str(res1)
 
 res = res.replace(" ","")   
 
-findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
-response = subprocess.check_output(["curl","-X","GET",findPlate])
-
 if res == "":
     
     while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
         c += 1
-            
     else:
         cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
         print("Plate is Unrecognized!")
         print("Saved to Folder: Unrecognized")
 
 elif res != "":
+    findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
+    response = subprocess.check_output(["curl","-X","GET",findPlate])
+
     print("Plate Number: ",str(res))
     
-    pattern =  '"UNREGISTERED"'
+    pattern =  '"REGISTERED"'
 
     match = re.search(pattern, response.decode())
        
-    if not match:
-        
-        print(response)
+    print(response)
     
+    if match:
         while os.path.exists("plates/processed/Registered/" + plateFilename + str(a) + ".jpg"):
             a += 1
-        
         else:
             cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', image)
-            
             print("Saved to Folder: Registered")
 
     else:
-        print(response)
         while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
             b += 1
         else:
@@ -177,6 +185,6 @@ elif res != "":
             
             print("Saved to Folder: Unregistered")
 
-res = None        
+del res
 cap.release()
 cv2.destroyAllWindows()

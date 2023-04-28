@@ -1,26 +1,20 @@
-import socket
-import struct
+import cv2, socket, numpy, pickle
 
-serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serv.bind(('0.0.0.0', 8080))
-serv.listen(5)
+s=socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
+ip="0.0.0.0"
+port=8080
+
+s.bind((ip,port))
 
 while True:
-    conn, addr = serv.accept()
-    print('Connection from:', addr)
-
-    # Receive the size of the incoming frame
-    size_data = conn.recv(4)
-    size = struct.unpack('i', size_data)[0]
-
-    # Receive the binary data of the frame
-    frame_data = conn.recv(size)
-
-    # Process the frame data here (e.g., decode it as an image)
-
-    # Send a response
-    response = 'Frame received'
-    conn.send(response.encode())
-
-    conn.close()
-    print('Client disconnected')
+    x=s.recvfrom(1000000)
+    clientip = x[1][0]
+    data=x[0]
+    print(data)
+    data=pickle.loads(data)
+    print(type(data))
+    data = cv2.imdecode(data, cv2.IMREAD_COLOR)
+    cv2.imshow('Stream', data)
+    if cv2.waitKey(1) & 0xFF == ord('c'):
+        break
+cv2.destroyAllWindows()
