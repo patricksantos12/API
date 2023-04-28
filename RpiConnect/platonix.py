@@ -16,8 +16,6 @@ socket_address = (host_ip, port)
 server_socket.bind(socket_address)
 server_socket.listen(5)
 
-
-
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480) 
