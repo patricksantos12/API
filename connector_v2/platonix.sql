@@ -1,3 +1,8 @@
+
+grant all privileges on *.* to `platonix`@'localhost' identified by 'platonixadmin';
+grant all privileges on *.* to `platonix`@'%' identified by 'platonixadmin';
+flush privileges;
+
 create database platonix CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 create table platonixApp (
