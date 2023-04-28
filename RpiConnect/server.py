@@ -1,20 +1,35 @@
-import cv2, socket, numpy, pickle
+import socket, cv2, pickle,struct,imutils
 
-s=socket.socket(socket.AF_INET , socket.SOCK_DGRAM)
-ip="0.0.0.0"
-port=8080
+# Socket Create
+server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host_name  = socket.gethostname()
+host_ip = socket.gethostbyname(host_name)
+print('HOST IP:',host_ip)
+port = 9999
+socket_address = (host_ip,port)
 
-s.bind((ip,port))
+# Socket Bind
+server_socket.bind(socket_address)
 
+# Socket Listen
+server_socket.listen(5)
+print("LISTENING AT:",socket_address)
+
+# Socket Accept
 while True:
-    x=s.recvfrom(1000000)
-    clientip = x[1][0]
-    data=x[0]
-    print(data)
-    data=pickle.loads(data)
-    print(type(data))
-    data = cv2.imdecode(data, cv2.IMREAD_COLOR)
-    cv2.imshow('Stream', data)
-    if cv2.waitKey(1) & 0xFF == ord('c'):
-        break
-cv2.destroyAllWindows()
+	client_socket,addr = server_socket.accept()
+	print('GOT CONNECTION FROM:',addr)
+	if client_socket:
+		vid = cv2.VideoCapture(0)
+		
+		while(vid.isOpened()):
+			img,frame = vid.read()
+			frame = imutils.resize(frame,width=320)
+			a = pickle.dumps(frame)
+			message = struct.pack("Q",len(a))+a
+			client_socket.sendall(message)
+			
+			cv2.imshow('TRANSMITTING VIDEO',frame)
+			key = cv2.waitKey(1) & 0xFF
+			if key ==ord('q'):
+				client_socket.close()

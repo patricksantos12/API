@@ -4,24 +4,28 @@ import sys
 import imutils
 import numpy as np
 import pytesseract
+import requests
+import pycurl
+import certifi
+from io import BytesIO
+from urllib.parse import urlencode
+import subprocess
+import re
 import socket
 import pickle
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host_name = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
+s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 10000000)
 
-port = 9999
-socket_address = (host_ip, port)
-server_socket.bind(socket_address)
-server_socket.listen(5)
+serverip="192.168.100.210"
+serverport=554
 
-
+haarcascade = "/home/cisco/Desktop/API/RpiConnect/model/haarcascade_plate_number.xml"
 
 cap = cv2.VideoCapture(0)
-cap.set(3, 640)
-cap.set(4, 480) 
 
+cap.set(3, 640) # width
+cap.set(4, 480) #height
 
 min_area = 500
 
@@ -33,37 +37,28 @@ a = 1
 b = 1
 c = 1
 
-haarcascade = "/home/cisco/Desktop/API/RpiConnect/model/haarcascade_plate_number.xml"
-plate_cascade = cv2.CascadeClassifier(haarcascade)
-
-
-pytesseract.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
-
-
-plate_filename = "plate"
-
 while True:
-    
     success, img = cap.read()
 
-    
+    plate_cascade = cv2.CascadeClassifier(haarcascade)
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
     plates = plate_cascade.detectMultiScale(img_gray, 1.1, 4)
 
-    
-    for (x, y, w, h) in plates:
+    for (x,y,w,h) in plates:
         area = w * h
 
-        
         if area > min_area:
-            cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            cv2.putText(img, "Plate Number", (x, y - 5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
-            img_roi = img[y: y + h, x:x + w]
+            cv2.rectangle(img, (x,y), (x+w, y+h), (0,255,0), 2)
+            cv2.putText(img, "Plate Number", (x,y-5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
+            img_roi = img[y: y+h, x:x+w]
             
-            # Perform OCR on the plate
-            gray = cv2.cvtColor
     cv2.imshow("Platonix", img)
-
+    
+    ret, buffer = cv2.imencode(".jpg", img,[int(cv2.IMWRITE_JPEG_QUALITY),30])    
+    x_as_bytes = pickle.dumps(buffer)
+    
+    s.sendto(x_as_bytes,(serverip , serverport))
     
     if cv2.waitKey(1) & 0xFF == ord('c'):
         while os.path.exists('plates/captured/' + plateFilename + str(count) + '.jpg'):
