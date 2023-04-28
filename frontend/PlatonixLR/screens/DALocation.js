@@ -10,10 +10,11 @@ import {
   ButtonText,
   SubTitle1,
   TESubTitle,
+  TESubTitle2,
   SubTitle3,
   PageLogo
 } from '../components/styles';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, ScrollView } from 'react-native';
 
 const DALocation = () => {
   const [carData, setCarData] = useState([]);
@@ -57,24 +58,26 @@ const DALocation = () => {
         <Line />
         <SubTitle>Gathered Data By Location</SubTitle>
         <Line />
-        <View>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search location"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-          {Object.entries(locationCounts)
-            .filter(([location]) => location.includes(searchQuery))
-            .map(([location, counts]) => (
-              <View key={location}>
-                <SubTitle3>{location}</SubTitle3>
-                <TESubTitle>Total Registered: {counts.registered}</TESubTitle>
-                <TESubTitle>Total Unregistered: {counts.unregistered}</TESubTitle>
-                <Line />
-              </View>
-            ))}
-        </View>
+        <ScrollView>
+          <View>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search location"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+            {Object.entries(locationCounts)
+              .filter(([location]) => location.includes(searchQuery))
+              .map(([location, counts]) => (
+                <View key={location}>
+                  <SubTitle3>{location}</SubTitle3>
+                  <TESubTitle2>Total Registered: {counts.registered}</TESubTitle2>
+                  <TESubTitle2>Total Unregistered: {counts.unregistered}</TESubTitle2>
+                  <Line />
+                </View>
+              ))}
+          </View>
+        </ScrollView>
       </InnerContainer>
     </StyledContainer>
   );

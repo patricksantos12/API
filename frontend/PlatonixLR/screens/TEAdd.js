@@ -33,7 +33,8 @@ import {
     TextLinkContent,
     PageTitle1,
     SubTitle1,
-    PicturesLogo
+    PicturesLogo,
+    StyledButtonBack
 
 } from '../components/styles';
 
@@ -179,10 +180,14 @@ const TEAdd = ({navigation}) => {
                     </StyledButton>
                     <Line />
 
-                        
+                    <StyledButtonBack onPress={() => {navigation.navigate('TEDeleteUpdate')}}>
+                        <ButtonText>View, Edit and Delete Text Entries</ButtonText>
+                    </StyledButtonBack>
+  
                 </StyledFormArea>)}
                 </Formik>
             </InnerContainer>
+            
         </StyledContainer>
         </KeyboardAvoidingWrapper>
     );

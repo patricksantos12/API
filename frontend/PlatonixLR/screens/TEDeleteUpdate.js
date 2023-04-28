@@ -138,19 +138,13 @@ const TEDeleteUpdate = ({ navigation }) => {
                 <Text style={{color: 'white'}}>Delete</Text>
               </TEButton>
             </View>
+            <Line />
           </View>
                 
                     )}
                     keyExtractor={item => item.platonixID.toString()}
                 />
             </InnerContainer>
-
-            <View>
-              <Line />
-            <StyledButtonBack onPress={() => {navigation.navigate('TEAdd')}}>
-                        <ButtonText>Add Text Entry</ButtonText>
-                    </StyledButtonBack>
-            </View>
         </StyledContainer>
     );
 };

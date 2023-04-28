@@ -182,6 +182,16 @@ export const TESubTitle = styled.Text`
     ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
 `;
 
+export const TESubTitle2 = styled.Text`
+    font-size: 22px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: ${tertiary};
+    padding-top: 0px;
+    ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
+`;
+
+
 export const StyledFormArea = styled.View`
     width: 90%;
 `;
