@@ -47,6 +47,9 @@ const DALocation = () => {
       padding: 10,
       marginBottom: 10,
     },
+    scrollView: {
+      height: '80%', // adjust the height as needed
+    },
   };
 
   return (
@@ -58,14 +61,14 @@ const DALocation = () => {
         <Line />
         <SubTitle>Gathered Data By Location</SubTitle>
         <Line />
-        <ScrollView>
-          <View>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search location"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
+        <View style={styles.scrollView}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search location"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          <ScrollView>
             {Object.entries(locationCounts)
               .filter(([location]) => location.includes(searchQuery))
               .map(([location, counts]) => (
@@ -76,8 +79,8 @@ const DALocation = () => {
                   <Line />
                 </View>
               ))}
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </InnerContainer>
     </StyledContainer>
   );
