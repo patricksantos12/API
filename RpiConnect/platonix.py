@@ -7,6 +7,7 @@ import pytesseract
 import socket
 import pickle
 import subprocess
+import re
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -125,7 +126,6 @@ while True:
                 res = res.replace(" ","")   
                 res = res.replace("(", "").replace(")", "").replace("/", "")
 
-                print(str(res))
                 if res == "":
                     
                     while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):

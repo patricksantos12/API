@@ -7,10 +7,10 @@ import pytesseract
 import socket
 import pickle 
 import subprocess
+import re
 
 plateFilename = "plate"
 
-count = 1
 i = 1
 a = 1
 b = 1
@@ -21,7 +21,6 @@ pytesseract.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
 plate_filename = "plate"
 
 while True:
-
     img = "/home/cisco/Desktop/PLATONIXSYSTEM/RpiConnect/plates/captured/cropped_scanned/plate30.jpg" 
 
     image = cv2.imread(img)
@@ -43,8 +42,7 @@ while True:
     res = res1
     res = res.replace(" ","")
     res = res.replace("(", "").replace(")", "").replace("/", "")
-
-    print(str(res))    
+  
     if res == "":
                 
         while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
