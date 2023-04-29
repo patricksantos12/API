@@ -84,7 +84,7 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 def main():
     try:
         server = ThreadedHTTPServer(('192.168.100.210', 8080), MyHandler)
-        print('istarted httpserver...')
+        print('httpserver started...')
         server.serve_forever()
     except KeyboardInterrupt:
         print('^C received, shutting down server')

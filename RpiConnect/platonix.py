@@ -6,20 +6,11 @@ import numpy as np
 import pytesseract
 import socket
 import pickle
-
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host_name = socket.gethostname()
-host_ip = socket.gethostbyname(host_name)
-
-port = 9999
-socket_address = (host_ip, port)
-server_socket.bind(socket_address)
-server_socket.listen(5)
+import subprocess
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480) 
-
 
 min_area = 500
 
@@ -34,35 +25,26 @@ c = 1
 haarcascade = "/home/cisco/Desktop/API/RpiConnect/model/haarcascade_plate_number.xml"
 plate_cascade = cv2.CascadeClassifier(haarcascade)
 
-
 pytesseract.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
-
 
 plate_filename = "plate"
 
 while True:
-    
     success, img = cap.read()
-
     
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     plates = plate_cascade.detectMultiScale(img_gray, 1.1, 4)
 
-    
     for (x, y, w, h) in plates:
         area = w * h
-
         
         if area > min_area:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(img, "Plate Number", (x, y - 5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
             img_roi = img[y: y + h, x:x + w]
-            
-            # Perform OCR on the plate
-            gray = cv2.cvtColor
+
     cv2.imshow("Platonix", img)
 
-    
     if cv2.waitKey(1) & 0xFF == ord('c'):
         while os.path.exists('plates/captured/' + plateFilename + str(count) + '.jpg'):
             count += 1
@@ -88,12 +70,9 @@ while True:
 
                 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-
                 gray_image = cv2.bilateralFilter(gray_image, 11, 17, 17)
 
-
                 edged = cv2.Canny(gray_image, 30, 200)
-
 
                 cnts,new = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 

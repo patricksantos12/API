@@ -10,8 +10,8 @@ haarcascade = "model/haarcascade_plate_number.xml"
 
 cap = cv2.VideoCapture(0)
 
-cap.set(3, 640) # width
-cap.set(4, 480) #height
+cap.set(3, 640) 
+cap.set(4, 480) 
 
 min_area = 500
 
