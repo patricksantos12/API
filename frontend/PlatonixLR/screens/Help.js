@@ -44,7 +44,7 @@ const {brand, darkLight, primary} = Colors;
 // keyboard avoiding view
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
-const Help = () => {
+const Help = ({navigation}) => {
 
     const [hidePassword, setHidePassword] = useState(true);
 
@@ -67,30 +67,28 @@ const Help = () => {
                     
                     <HelpLogo resizeMode="cover" source={require('./../assets/img/nicole.jpg')}/>
                     <PageTitle3>Nicole Mercado</PageTitle3>
-                    <SubTitle>email:</SubTitle>
-                    <SubTitle>nicole@gmail.com</SubTitle>
-                    <SubTitle>contact number:</SubTitle>
-                    <SubTitle>09545454</SubTitle>
+                    <SubTitle>EMAIL:</SubTitle>
+                    <SubTitle>nicolevalenciamercado@gmail.com</SubTitle>
+                    <SubTitle>CONTACT NUMBER:</SubTitle>
+                    <SubTitle>09757712276</SubTitle>
                     <Line />
                     <HelpLogo resizeMode="cover" source={require('./../assets/img/albert.jpg')}/>
                     <PageTitle3>Albert Tongol</PageTitle3>
-                    <SubTitle>email:</SubTitle>
-                    <SubTitle>albert@gmail.com</SubTitle>
-                    <SubTitle>contact number:</SubTitle>
-                    <SubTitle>0959595959</SubTitle>
+                    <SubTitle>EMAIL:</SubTitle>
+                    <SubTitle>alberttongoljr@gmail.com</SubTitle>
+                    <SubTitle>CONTACT NUMBER:</SubTitle>
+                    <SubTitle>09281964540</SubTitle>
                     <Line />
                     <HelpLogo resizeMode="cover" source={require('./../assets/img/pat.jpg')}/>
                     <PageTitle3>Patrick Santos</PageTitle3>
-                    <SubTitle>email:</SubTitle>
+                    <SubTitle>EMAIL:</SubTitle>
                     <SubTitle>patricksantos2627@gmail.com</SubTitle>
-                    <SubTitle>contact number:</SubTitle>
+                    <SubTitle>CONTACT NUMBER:</SubTitle>
                     <SubTitle>09519898644</SubTitle>
                 
                     <Line />
-                    <PageTitle3>or</PageTitle3>
-                   
-                    <StyledButton onPress={handleSubmit}>
-                        <ButtonText>Play a Demo Video</ButtonText>
+                    <StyledButton onPress={() => {navigation.navigate('Login')}}>
+                        <ButtonText>Back</ButtonText>
                     </StyledButton>
 
                 </StyledFormArea>

@@ -122,14 +122,12 @@ export const PageTitle3 = styled.Text`
 
 
 export const SubTitle = styled.Text`
-    font-size: 18px;
-    letter-spacing: 1px;
-    font-weight: bold;
-    color: ${tertiary};
-;
-    
-
-    ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  color: ${tertiary};
+  ${(props) => props.welcome && 'margin-bottom: 5px; font-weight:normal;'}
+  text-align: center;
 `;
 
 export const SubTitle1 = styled.Text`
