@@ -170,7 +170,8 @@ const TEAdd = ({navigation}) => {
     onBlur={handleBlur('carCityLocation')}
     value={values.carCityLocation}
   />
-  
+ {errors.carCityLocation && touched.carCityLocation && <MsgBox>{errors.carCityLocation}</MsgBox>}
+
 
                         
                     <MsgBox>...</MsgBox>

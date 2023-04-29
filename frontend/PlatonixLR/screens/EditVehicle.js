@@ -38,19 +38,25 @@ const EditVehicle = ({ route, navigation }) => {
   }, [platonixID]);
 
   const handleUpdate = (values) => {
-    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(values)
+  const { plateNumber, carRegistrationStatus, carColor, carMaker, carModel, carCityLocation } = values;
+  if (!plateNumber || !carRegistrationStatus || !carColor || !carMaker || !carModel || !carCityLocation) {
+    alert('Please fill out all fields.'); // display an alert if any fields are left blank
+    return;
+  }
+  fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(values)
+  })
+    .then(response => response.json())
+    .then(() => {
+      navigation.navigate('TEMenu'); // navigate to TEMenu screen
     })
-      .then(response => response.json())
-      .then(() => {
-        navigation.navigate('TEMenu'); // navigate to TEMenu screen
-      })
-      .catch(error => console.error(error));
+    .catch(error => console.error(error));
 };
+
 
   if (!vehicle) {
     return null;
