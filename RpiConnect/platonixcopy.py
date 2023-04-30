@@ -56,19 +56,19 @@ while True:
     cv2.imshow("Platonix", img)
 
     if cv2.waitKey(1) & 0xFF == ord('c'):
-        while os.path.exists('/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/' + plateFilename + str(count) + '.jpg'):
+        while os.path.exists('plates/captured/' + plateFilename + str(count) + '.jpg'):
             count += 1
         else:    
             try:
                 img_roi
             except NameError:
                 pass
-                while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+                while os.path.exists("plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
                     c += 1
                     
                 else:
-                    cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/' + plateFilename + str(count) + '.jpg', img)
-                    cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
+                    cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img)
+                    cv2.imwrite('plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
                     print("Vehicle plate number is unrecognized")
                     print("Photo Saved to Folder: Unrecognized")
                     unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
@@ -77,9 +77,9 @@ while True:
                     print("Saved to Database: UNRECOGNIZED")
                     break
             else:
-                cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/' + plateFilename + str(count) + '.jpg', img_roi)
+                cv2.imwrite('plates/imageSaved/' + plateFilename + str(count) + '.jpg', img_roi)
                 cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
-                image = cv2.imread('/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/' + plateFilename + str(count) + '.jpg')
+                image = cv2.imread('plates/imageSaved/' + plateFilename + str(count) + '.jpg')
                 image = imutils.resize(image, width = 300)
 
                 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -116,10 +116,10 @@ while True:
                         x,y,w,h = cv2.boundingRect(c)
                         new_img = image[y:y + h, x:x + w]
                         
-                        while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg"):
+                        while os.path.exists("plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg"):
                             i += 1
                         else:
-                            cv2.imwrite("/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg", new_img)
+                            cv2.imwrite("plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg", new_img)
                             cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
                             break
                         break
@@ -128,7 +128,7 @@ while True:
                 except cv2.error as e:
                     pass
                     
-                Cropped_loc = "/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg"
+                Cropped_loc = "/home/cisco/Desktop/API/RpiConnect/plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg"
                 cv2.imread(Cropped_loc)
 
                 plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
@@ -141,10 +141,10 @@ while True:
 
                 if res == "":
                     
-                    while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+                    while os.path.exists("plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
                         c += 1
                     else:
-                        cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
+                        cv2.imwrite('plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
                         print("Vehicle plate number unrecognized")
                         print("Photo Saved to Folder: Unrecognized")
                         unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
@@ -165,10 +165,10 @@ while True:
                     print(response)
                     
                     if match:
-                        while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Registered/" + plateFilename + str(a) + ".jpg"):
+                        while os.path.exists("plates/imageProcessed/Registered/" + plateFilename + str(a) + ".jpg"):
                             a += 1
                         else:
-                            cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Registered/' + plateFilename + str(a) + '.jpg', image)
+                            cv2.imwrite('plates/imageProcessed/Registered/' + plateFilename + str(a) + '.jpg', image)
                             print("Photo Saved to Folder: Registered")
                             reg = "INSERT INTO `REGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
                             mycursor.execute(reg)
@@ -177,10 +177,10 @@ while True:
                             del res
 
                     else:
-                        while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg"):
+                        while os.path.exists("plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg"):
                             b += 1
                         else:
-                            cv2.imwrite("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
+                            cv2.imwrite("plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
                             print("Photo Saved to Folder: Unregistered")
                             unreg = "INSERT INTO `UNREGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
                             mycursor.execute(unreg)
@@ -194,5 +194,3 @@ mycursor.close()
 mydb.close()
 cap.release()
 cv2.destroyAllWindows()
-
-input("Press Enter to exit...")

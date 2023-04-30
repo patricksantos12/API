@@ -12,7 +12,7 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
-print("PLATONIX DATA ANALYTICS 2023")
+print("PLATONIX COUNTER DATA ANALYTICS")
 
 reg = "SELECT `Date`, COUNT(*) FROM `REGISTERED` GROUP BY `Date` ORDER BY `Date` ASC;"
 mycursor.execute(reg)
@@ -69,8 +69,6 @@ ax.legend(wedges, title,
           bbox_to_anchor =(1, 0, 0.5, 1))
  
 plt.setp(autotexts, size = 12, weight ="bold")
-ax.set_title("Image Processing Data Analytics")
+ax.set_title("Platonix Image Processing Data Analytics")
  
-# show plot
 plt.show()
-
