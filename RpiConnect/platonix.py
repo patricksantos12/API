@@ -8,6 +8,7 @@ import socket
 import pickle
 import subprocess
 import re
+import mysql.connector
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -29,6 +30,14 @@ plate_cascade = cv2.CascadeClassifier(haarcascade)
 pytesseract.pytesseract.tesseract_cmd = r"/usr/bin/tesseract"
 
 plate_filename = "plate"
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="admin",
+  password="password",
+  database="RegistrationDatabase"
+)
+mycursor = mydb.cursor()
 
 while True:
     success, img = cap.read()
@@ -54,19 +63,23 @@ while True:
                 img_roi
             except NameError:
                 pass
-                while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+                while os.path.exists("plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
                     c += 1
                     
                 else:
                     cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img)
-                    cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
-                    print("Plate is Unrecognized!")
+                    cv2.imwrite('plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
+                    print("Vehicle plate number is unrecognized")
                     print("Photo Saved to Folder: Unrecognized")
+                    unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
+                    mycursor.execute(unrec)
+                    myresult3 = mycursor.fetchall()
+                    print("Saved to Database: UNRECOGNIZED")
                     break
             else:
-                cv2.imwrite('plates/captured/' + plateFilename + str(count) + '.jpg', img_roi)
+                cv2.imwrite('plates/imageSaved/' + plateFilename + str(count) + '.jpg', img_roi)
                 cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
-                image = cv2.imread('plates/captured/' + plateFilename + str(count) + '.jpg')
+                image = cv2.imread('plates/imageSaved/' + plateFilename + str(count) + '.jpg')
                 image = imutils.resize(image, width = 300)
 
                 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -103,10 +116,10 @@ while True:
                         x,y,w,h = cv2.boundingRect(c)
                         new_img = image[y:y + h, x:x + w]
                         
-                        while os.path.exists("plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg"):
+                        while os.path.exists("plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg"):
                             i += 1
                         else:
-                            cv2.imwrite("plates/captured/cropped_scanned/" + plateFilename + str(i) + ".jpg", new_img)
+                            cv2.imwrite("plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg", new_img)
                             cv2.rectangle(img, (0,200), (640,300), (0,255,0), cv2.FILLED)
                             break
                         break
@@ -128,12 +141,16 @@ while True:
 
                 if res == "":
                     
-                    while os.path.exists("plates/processed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+                    while os.path.exists("plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
                         c += 1
                     else:
-                        cv2.imwrite('plates/processed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
-                        print("Plate is Unrecognized!")
+                        cv2.imwrite('plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
+                        print("Vehicle plate number unrecognized")
                         print("Photo Saved to Folder: Unrecognized")
+                        unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
+                        mycursor.execute(unrec)
+                        myresult3 = mycursor.fetchall()
+                        print("Saved to Database: UNRECOGNIZED")
 
                 elif res != "":
                     findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
@@ -148,22 +165,32 @@ while True:
                     print(response)
                     
                     if match:
-                        while os.path.exists("plates/processed/Registered/" + plateFilename + str(a) + ".jpg"):
+                        while os.path.exists("plates/imageProcessed/Registered/" + plateFilename + str(a) + ".jpg"):
                             a += 1
                         else:
-                            cv2.imwrite('plates/processed/Registered/' + plateFilename + str(a) + '.jpg', image)
+                            cv2.imwrite('plates/imageProcessed/Registered/' + plateFilename + str(a) + '.jpg', image)
                             print("Photo Saved to Folder: Registered")
+                            reg = "INSERT INTO `REGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
+                            mycursor.execute(reg)
+                            myresult3 = mycursor.fetchall()
+                            print("Saved to Database: REGISTERED")
                             del res
 
                     else:
-                        while os.path.exists("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg"):
+                        while os.path.exists("plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg"):
                             b += 1
                         else:
-                            cv2.imwrite("plates/processed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
-                            
+                            cv2.imwrite("plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
                             print("Photo Saved to Folder: Unregistered")
+                            unreg = "INSERT INTO `UNREGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
+                            mycursor.execute(unreg)
+                            myresult3 = mycursor.fetchall()
+                            print("Saved to Database: UNREGISTERED")
                             del res
             break
         break
+mydb.commit()
+mycursor.close()
+mydb.close()
 cap.release()
 cv2.destroyAllWindows()
