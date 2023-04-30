@@ -30,7 +30,7 @@ for y in myresult2:
 unrec = "SELECT `Date`, COUNT(*) FROM `UNRECOGNIZED` GROUP BY `Date` ORDER BY `Date` ASC;"
 mycursor.execute(unrec)
 myresult3 = mycursor.fetchall()
-print("\nVerified Images as Unrecognized (As of: April 30, 2023")
+print("\nVerified Images as Unrecognized (As of: April 30, 2023)")
 for z in myresult3:
     print(z)
 
