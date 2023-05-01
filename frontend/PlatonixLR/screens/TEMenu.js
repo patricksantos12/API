@@ -77,7 +77,7 @@ const TEMenu = ({navigation}) => {
 
                                 <PicturesLogo resizeMode="contain" source={require('./../assets/img/editdelTE.png')}/>
                                 <StyledButton onPress={() => {navigation.navigate('TEDeleteUpdate')}}>
-                                    <ButtonText>View, Edit and Delete Text Entries</ButtonText>
+                                    <ButtonText>Search, Edit, and Delete Text Entries</ButtonText>
                                 </StyledButton>
                             </StyledFormArea>
                         )}

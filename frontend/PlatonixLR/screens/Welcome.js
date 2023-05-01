@@ -63,10 +63,7 @@ const Menu = ({navigation}) => {
                     }}
                 >{({handleChange, handleBlur, handleSubmit, values}) => (<StyledFormArea>
                     
-                    <PicturesLogo resizeMode="contain" source={require('./../assets/img/ImageProcessing.png')}/>
-                    <StyledButton onPress={() => {navigation.navigate('ImageProcessing')}}>
-                        <ButtonText>Image Processing</ButtonText>
-                    </StyledButton>
+                    
 
                     <PicturesLogo resizeMode="contain" source={require('./../assets/img/DataAnalytics.png')}/>
                     <StyledButton onPress={() => {navigation.navigate('DAMenu')}}>

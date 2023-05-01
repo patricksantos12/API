@@ -53,13 +53,13 @@ const validationSchema = Yup.object().shape({
   carRegistrationStatus: Yup.string()
     .required('Registration Status is required'),
   carColor: Yup.string()
-    .required('Car Color is required'),
+    .required('Color is required'),
   carMaker: Yup.string()
-    .required('Car Brand is required'),
+    .required('Brand is required'),
   carModel: Yup.string()
-    .required('Car Model is required'),
+    .required('Model is required'),
   carCityLocation: Yup.string()
-    .required('Car City Location is required')
+    .required('City Location is required')
 });
 
 
@@ -129,7 +129,7 @@ const TEAdd = ({navigation}) => {
   {errors.carRegistrationStatus && touched.carRegistrationStatus && <MsgBox>{errors.carRegistrationStatus}</MsgBox>}
 
   <MyTextInput 
-    label="Car Color"
+    label="Color"
     icon="sun"
     placeholder="Enter Color"
     placeholderTextColor={darkLight}
@@ -140,7 +140,7 @@ const TEAdd = ({navigation}) => {
   {errors.carColor && touched.carColor && <MsgBox>{errors.carColor}</MsgBox>}
 
   <MyTextInput 
-    label="Car Brand"
+    label="Brand"
     icon="cross-reference"
     placeholder="Enter brand"
     placeholderTextColor={darkLight}
@@ -151,7 +151,7 @@ const TEAdd = ({navigation}) => {
   {errors.carMaker && touched.carMaker && <MsgBox>{errors.carMaker}</MsgBox>}
 
   <MyTextInput 
-    label="Car Model"
+    label="Model"
     icon="apps"
     placeholder="Enter Model"
     placeholderTextColor={darkLight}
@@ -162,7 +162,7 @@ const TEAdd = ({navigation}) => {
   {errors.carModel && touched.carModel && <MsgBox>{errors.carModel}</MsgBox>}
 
   <MyTextInput 
-    label="Car City Location"
+    label="City Location"
     icon="location"
     placeholder="Enter Location"
     placeholderTextColor={darkLight}
@@ -182,7 +182,7 @@ const TEAdd = ({navigation}) => {
                     <Line />
 
                     <StyledButtonBack onPress={() => {navigation.navigate('TEDeleteUpdate')}}>
-                        <ButtonText>View, Edit and Delete Text Entries</ButtonText>
+                        <ButtonText>Search, Edit, and Delete Text Entries</ButtonText>
                     </StyledButtonBack>
   
                 </StyledFormArea>)}

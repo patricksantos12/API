@@ -114,12 +114,6 @@ const Login = ({navigation}) => {
                             <Fontisto name="mobile-alt" color={primary} size={25}/>
                         <ButtonText help={true}>Need Help?</ButtonText>
                     </StyledButton>
-                    <ExtraView>
-                        <ExtraText>Not Registered?</ExtraText>
-                        <TextLink onPress={() => navigation.navigate('Register')}>
-                            <TextLinkContent> Register Here</TextLinkContent>
-                        </TextLink>
-                    </ExtraView>
                 </StyledFormArea>
                 )}
                 </Formik>
