@@ -21,7 +21,7 @@ const DALocation = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetch('http://192.168.100.212:3000/api/v1/platonix/vehicle/search/all')
+    fetch('http://192.168.167.131:3000/api/v1/platonix/vehicle/search/all')
       .then((response) => response.json())
       .then((data) => setCarData(data));
   }, []);
@@ -48,7 +48,7 @@ const DALocation = () => {
       marginBottom: 10,
     },
     scrollView: {
-      height: '80%', // adjust the height as needed
+      flex: 1,
     },
   };
 
@@ -56,7 +56,7 @@ const DALocation = () => {
     <StyledContainer>
       <StatusBar style="dark" />
       <InnerContainer>
-      <PageLogo resizeMode="cover" source={require('./../assets/img/Location.png')}/>
+        <PageLogo resizeMode="cover" source={require('./../assets/img/Location.png')}/>
         <PageTitle3>Data Analytics 2023</PageTitle3>
         <Line />
         <SubTitle>Gathered Data By Location</SubTitle>

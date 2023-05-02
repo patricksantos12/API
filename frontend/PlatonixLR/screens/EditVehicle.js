@@ -31,7 +31,7 @@ const EditVehicle = ({ route, navigation }) => {
   const [vehicle, setVehicle] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/search/id/${platonixID}`)
+    fetch(`http://192.168.167.131:3000/api/v1/platonix/vehicle/search/id/${platonixID}`)
       .then(response => response.json())
       .then(data => setVehicle(data))
       .catch(error => console.error(error));
@@ -43,7 +43,7 @@ const EditVehicle = ({ route, navigation }) => {
     alert('Please fill out all fields.'); // display an alert if any fields are left blank
     return;
   }
-  fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
+  fetch(`http://192.168.167.131:3000/api/v1/platonix/vehicle/update/${platonixID}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'

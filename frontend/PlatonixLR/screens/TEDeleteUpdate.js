@@ -33,7 +33,7 @@ const TEDeleteUpdate = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetch('http://192.168.100.212:3000/api/v1/platonix/vehicle/search/all')
+    fetch('http://192.168.167.131:3000/api/v1/platonix/vehicle/search/all')
       .then((response) => response.json())
       .then((data) => setVehicles(data))
       .catch((error) => console.error(error));
@@ -48,7 +48,7 @@ const TEDeleteUpdate = ({ navigation }) => {
         {
           text: 'OK',
           onPress: () => {
-            fetch(`http://192.168.100.212:3000/api/v1/platonix/vehicle/remove/${platonixID}`, {
+            fetch(`http://192.168.167.131:3000/api/v1/platonix/vehicle/remove/${platonixID}`, {
               method: 'DELETE',
             })
               .then((response) => response.json())

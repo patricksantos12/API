@@ -22,7 +22,7 @@ import {
 import {View, Text} from 'react-native';
 
 // API endpoint
-const API_ENDPOINT = 'http://192.168.100.212:3000/api/v1/platonix/vehicle/search/all';
+const API_ENDPOINT = 'http://192.168.167.131:3000/api/v1/platonix/vehicle/search/all';
 
 const DARegStatus = () => {
 
