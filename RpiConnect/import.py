@@ -59,7 +59,8 @@ def open_image():
         gray_image = cv2.GaussianBlur(gray, (5, 5), 0)
 
         gray_image = cv2.bilateralFilter(gray_image, 11, 17, 17)
-
+        
+        plate = None
         plate = pytesseract.image_to_string(gray_image, lang='eng')
         mapping = dict.fromkeys(range(32))
         res1 = plate.translate(mapping)
@@ -67,7 +68,6 @@ def open_image():
         res = res1
         res = res.replace(" ","")
         res = res.replace("(", "").replace(")", "").replace("/", "")
-      
         if res == "":
                     
             while os.path.exists("plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
@@ -83,7 +83,7 @@ def open_image():
                 break
                 
         elif res != "":
-            findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
+            findPlate = "http://192.168.167.131:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
             response = subprocess.check_output(["curl","-s", "-X","GET",findPlate])
                         
             print("Plate Number: ",str(res))

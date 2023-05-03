@@ -41,10 +41,13 @@ mycursor = mydb.cursor()
 
 while True:
     success, img = cap.read()
-    
-    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    plates = plate_cascade.detectMultiScale(img_gray, 1.1, 4)
-
+    try:
+        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        plates = plate_cascade.detectMultiScale(img_gray, 1.1, 4)
+    except cv2.error:
+        pass
+    except NameError:
+        pass
     for (x, y, w, h) in plates:
         area = w * h
         
@@ -130,15 +133,17 @@ while True:
                     
                 Cropped_loc = "/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/cropped_scanned/" + plateFilename + str(i) + ".jpg"
                 cv2.imread(Cropped_loc)
-
+               
+                plate = None
                 plate = pytesseract.image_to_string(Cropped_loc, lang='eng')
+
                 mapping = dict.fromkeys(range(32))
-                res1 = plate.translate(mapping)
+                res1 = plate.translate(mapping) 
 
                 res = res1
                 res = res.replace(" ","")   
                 res = res.replace("(", "").replace(")", "").replace("/", "")
-
+                
                 if res == "":
                     
                     while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
@@ -153,7 +158,7 @@ while True:
                         print("Saved to Database: UNRECOGNIZED")
 
                 elif res != "":
-                    findPlate = "http://192.168.100.212:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
+                    findPlate = "http://192.168.167.131:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
                     response = subprocess.check_output(["curl","-s", "-X","GET",findPlate])
                     
                     print("Plate Number: ",str(res))
