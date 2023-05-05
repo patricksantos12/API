@@ -44,7 +44,7 @@ data = [registered, unregistered, unrecognized]
  
 explode = (0.02, 0.015, 0.015)
 
-colors = ( "green", "red", "yellow")
+colors = ( "#9bd0b7", "#e05656", "#007ed6")
  
 wp = { 'linewidth' : 1, 'edgecolor' : "black" }
  

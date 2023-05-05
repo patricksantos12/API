@@ -75,11 +75,11 @@ while True:
                     cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/' + plateFilename + str(count) + '.jpg', img)
                     cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', img)
                     print("Vehicle plate number is unrecognized")
-                    print("Photo Saved to Folder: Unrecognized as " + plateFilename + str(c) + ".jpg")
+                    print("Photo Saved to Folder: Unrecognized")
                     unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
                     mycursor.execute(unrec)
                     myresult3 = mycursor.fetchall()
-                    print("Session Saved to Database: UNRECOGNIZED")
+                    print("Saved to Database: UNRECOGNIZED")
                     break
             else:
                 cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageSaved/' + plateFilename + str(count) + '.jpg', img_roi)
@@ -147,32 +147,20 @@ while True:
                 res = res.replace("(", "").replace(")", "").replace("/", "")
                 
                 if res == "":
-                    while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
-                        c += 1
-                    else:
-                        cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
-                        print("Vehicle plate number unrecognized")
-                        print("Photo Saved to Folder: Unrecognized as " + plateFilename + str(c) + ".jpg")
-                        unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
-                        mycursor.execute(unrec)
-                        myresult3 = mycursor.fetchall()
-                        print("Session Saved to Database: UNRECOGNIZED")
-                        
-                elif res == "NBC1234":
-                    while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
-                        c += 1
-                    else:
-                        cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
-                        print("Vehicle plate number unrecognized")
-                        print("Photo Saved to Folder: Unrecognized  as " + plateFilename + str(c) + ".jpg")
-                        unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
-                        mycursor.execute(unrec)
-                        myresult3 = mycursor.fetchall()
-                        print("Session Saved to Database: UNRECOGNIZED")
-                        del res
                     
+                    while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
+                        c += 1
+                    else:
+                        cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
+                        print("Vehicle plate number unrecognized")
+                        print("Photo Saved to Folder: Unrecognized")
+                        unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
+                        mycursor.execute(unrec)
+                        myresult3 = mycursor.fetchall()
+                        print("Saved to Database: UNRECOGNIZED")
+
                 elif res != "":
-                    findPlate = "http://192.168.167.131:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
+                    findPlate = "http://192.168.100.22:3000/api/v1/platonix/vehicle/search/plateno/"+str(res)
                     response = subprocess.check_output(["curl","-s", "-X","GET",findPlate])
                     
                     print("Plate Number: ",str(res))
@@ -180,42 +168,31 @@ while True:
                     pattern =  ':"Registered",'
 
                     match = re.search(pattern, response.decode())
+                       
+                    print(response)
                     
                     if match:
-                        print(response)
                         while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Registered/" + plateFilename + str(a) + ".jpg"):
                             a += 1
                         else:
                             cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Registered/' + plateFilename + str(a) + '.jpg', image)
-                            print("Photo Saved to Folder: Registered as " + plateFilename + str(a) + ".jpg")
+                            print("Photo Saved to Folder: Registered")
                             reg = "INSERT INTO `REGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
                             mycursor.execute(reg)
                             myresult3 = mycursor.fetchall()
-                            print("Session Saved to Database: REGISTERED")
+                            print("Saved to Database: REGISTERED")
                             del res
+
                     else:
-                        pattern =  ':"Unregistered",'
-                        match1 = re.search(pattern, response.decode())
-                        if match1:
-                            print(response)
-                            while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg"):
-                                b += 1
-                            else:
-                                cv2.imwrite("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
-                                print("Photo Saved to Folder: Unregistered as " + plateFilename + str(b) + ".jpg")
-                                unreg = "INSERT INTO `UNREGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
-                                mycursor.execute(unreg)
-                                myresult3 = mycursor.fetchall()
-                                print("Session Saved to Database: UNREGISTERED")
-                                del res
+                        while os.path.exists("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg"):
+                            b += 1
                         else:
-                            cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
-                            print("Vehicle plate number unrecognized")
-                            print("Photo Saved to Folder: Unrecognized as " + plateFilename + str(c) + ".jpg")
-                            unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
-                            mycursor.execute(unrec)
+                            cv2.imwrite("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
+                            print("Photo Saved to Folder: Unregistered")
+                            unreg = "INSERT INTO `UNREGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
+                            mycursor.execute(unreg)
                             myresult3 = mycursor.fetchall()
-                            print("Session Saved to Database: UNRECOGNIZED")
+                            print("Saved to Database: UNREGISTERED")
                             del res
             break
         break
