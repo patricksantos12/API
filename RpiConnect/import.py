@@ -68,7 +68,7 @@ def open_image():
 
         res = res1
         res = res.replace(" ","")
-        res = res.replace("(", "").replace(")", "").replace("/", "")
+        res = res.replace("(", "").replace(")", "").replace("/", "").replace("[", "").replace("]", "").replace("|", "")
         
         if res == "":
             while os.path.exists("plates/imageProcessed/Unrecognized/" + plateFilename + str(c) + ".jpg"):
@@ -76,7 +76,7 @@ def open_image():
             else:
                 cv2.imwrite('plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
                 print("Plate is Unrecognized!")
-                print("Photo Saved to Folder: Unrecognized as " + plateFilename + str(c) + ".jpg")
+                print("Photo Saved to Folder: Unrecognized")
                 unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
                 mycursor.execute(unrec)
                 myresult3 = mycursor.fetchall()
@@ -89,7 +89,7 @@ def open_image():
                 else:
                     cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
                     print("Vehicle plate number unrecognized")
-                    print("Photo Saved to Folder: Unrecognized as " + plateFilename + str(c) + ".jpg")
+                    print("Photo Saved to Folder: Unrecognized")
                     unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
                     mycursor.execute(unrec)
                     myresult3 = mycursor.fetchall()
@@ -111,7 +111,7 @@ def open_image():
                     a += 1
                 else:
                     cv2.imwrite('plates/imageProcessed/Registered/' + plateFilename + str(a) + '.jpg', image)
-                    print("Photo Saved to Folder: Registered  as " + plateFilename + str(a) + ".jpg")
+                    print("Photo Saved to Folder: Registered")
                     reg = "INSERT INTO `REGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
                     mycursor.execute(reg)
                     myresult3 = mycursor.fetchall()
@@ -127,7 +127,7 @@ def open_image():
                         b += 1
                     else:
                         cv2.imwrite("/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unregistered/" + plateFilename + str(b) + ".jpg", image)
-                        print("Photo Saved to Folder: Unregistered as " + plateFilename + str(b) + ".jpg")
+                        print("Photo Saved to Folder: Unregistered")
                         unreg = "INSERT INTO `UNREGISTERED` (PlateN, Date) VALUES('"+str(res)+"',CURDATE());"
                         mycursor.execute(unreg)
                         myresult3 = mycursor.fetchall()
@@ -136,7 +136,7 @@ def open_image():
                 else:
                     cv2.imwrite('/home/cisco/Desktop/API/RpiConnect/plates/imageProcessed/Unrecognized/' + plateFilename + str(c) + '.jpg', image)
                     print("Vehicle plate number unrecognized")
-                    print("Photo Saved to Folder: Unrecognized as " + plateFilename + str(c) + ".jpg")
+                    print("Photo Saved to Folder: Unrecognized")
                     unrec = "INSERT INTO `UNRECOGNIZED` (Verification, Date) VALUES(NULL,CURDATE());"
                     mycursor.execute(unrec)
                     myresult3 = mycursor.fetchall()
